@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import Cropper from './Cropper';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Cropper />
+      <Cropper/>
     </div>
   );
 }

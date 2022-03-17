@@ -40,7 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "react-cropper": "^2.1.8"
-  }
+  "dependencies": {}
 }
