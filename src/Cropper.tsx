@@ -26,23 +26,27 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   }, [])
 
   const onMouseDown = (e: any) => {
-    console.log(e)
+    const { clientX, clientY } = e;
+    console.log("down",clientX, clientY)
   }
   const onMouseEnter = (e: any) => {
-    console.log(e)
+    const { clientX, clientY } = e;
+    console.log("enter",clientX, clientY)
   }
   const onMouseMove = (e: any) => {
-    console.log(e)
+    const { clientX, clientY } = e;
+    console.log("move",clientX, clientY)
   }
   const onMouseUp = (e: any) => {
-    console.log(e)
+    const { clientX, clientY } = e;
+    console.log("up",clientX, clientY)
   }
 
 
   return (
     <div style={{ width: "300px", height: "200px", background: "rgba(0,0,0,0.3)" }}>
-      <img src="https://jambo2018.github.io/img/top_img.jpg" width={300} height={200} style={{ position: "absolute", zIndex: "-1" }} />
-      <canvas ref={canvasRef} width={300} height={200}
+      <img src="https://jambo2018.github.io/img/top_img.jpg" width={600} height={400} style={{ position: "absolute", zIndex: "-1" }} />
+      <canvas ref={canvasRef} width={600} height={400}
         onMouseDown={onMouseDown}
         onMouseEnter={onMouseEnter}
         onMouseMove={onMouseMove}
