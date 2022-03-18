@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 import logo from './logo.svg';
+=======
+>>>>>>> dev
 import Cropper from './Cropper';
 import './App.css';
 
@@ -7,6 +10,7 @@ function App() {
   return (
     <div className="App">
       <Cropper/>
+<<<<<<< HEAD
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -21,6 +25,8 @@ function App() {
           Learn React
         </a>
       </header> */}
+=======
+>>>>>>> dev
     </div>
   );
 }
