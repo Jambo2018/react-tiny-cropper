@@ -44,8 +44,8 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
 
 
   return (
-    <div style={{ width: "300px", height: "200px", background: "rgba(0,0,0,0.3)" }}>
-      <img src="https://jambo2018.github.io/img/top_img.jpg" width={600} height={400} style={{ position: "absolute", zIndex: "-1" }} />
+    <div style={{ width: "600px", height: "400px"}}>
+      <img src="https://jambo2018.github.io/img/top_img.jpeg" width={600} height={400} style={{ position: "absolute", zIndex: "-1" }} />
       <canvas ref={canvasRef} width={600} height={400}
         onMouseDown={onMouseDown}
         onMouseEnter={onMouseEnter}
