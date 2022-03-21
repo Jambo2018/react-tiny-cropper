@@ -2,9 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 interface propsType {
   shap?: String; // circle , square, rectangle,polygon
 }
+const DW: number = 10;
 const Cropper: React.FC<propsType> = (props: propsType) => {
+  let lastX: number, lastY: number;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
+  const [position, setPosition] = useState(0);
+  const [last, setLast] = useState({ x: 0, y: 0 });
   const { shap = "rectangle" } = props;
 
   // const onCrop = () => {
@@ -25,26 +29,75 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     // ctx.arcTo(100,100,100,100,100);
     // ctx.stroke()
     const { x, y, radius } = circle;
+    ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.fillRect(x+radius-5,y-5,10,10);
+    ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
+    ctx.closePath();
   }, []);
 
+  function paint() {
+    console.log("paint")
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return; const { x, y, radius } = circle;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
+  }
+
   const onMouseDown = (e: any) => {
+    // console.log("down",last)
+    const { x, y, radius } = circle;
     const { clientX, clientY } = e;
-    console.log("down", clientX, clientY);
+    let last = { x, y };
+    if (Math.pow((clientX - x), 2) + Math.pow((clientY - y), 2) < Math.pow(radius - DW / 2, 2)) {
+      setPosition(1);
+      last.x = clientX;
+      last.y = clientY;
+      setLast(last);
+    } else if (clientX > x+radius-DW/2 && clientX < x +radius+DW/2&& clientY >y-DW/2 && clientY < y + DW/2) {
+      setPosition(2);
+      last.x = clientX;
+      last.y = clientY;
+      setLast(last);
+    } else
+      setPosition(0);
   };
   const onMouseEnter = (e: any) => {
     const { clientX, clientY } = e;
     console.log("enter", clientX, clientY);
   };
   const onMouseMove = (e: any) => {
+    console.log(position)
     const { clientX, clientY } = e;
-    console.log("move", clientX, clientY);
+    if (position > 0) {
+      let { x, y, radius } = circle;
+      const dx = clientX - last.x;
+      const dy = clientY - last.y;
+      if (position === 1) {
+        x += dx;
+        y += dy;
+        setCircle({ x, y, radius });
+        paint()
+      } else {
+        if (Math.abs(dx) < Math.abs(dy)) radius += dy;
+        else radius += dx;
+        setCircle({ x, y, radius });
+        paint()
+      }
+      setLast({ x: clientX, y: clientY })
+    }
   };
   const onMouseUp = (e: any) => {
     const { clientX, clientY } = e;
-    console.log("up", clientX, clientY);
+    setPosition(0)
+    // console.log("up", clientX, clientY);
   };
 
   return (
