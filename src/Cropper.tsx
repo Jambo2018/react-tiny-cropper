@@ -18,6 +18,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   // };
   // init canvas and paint the background
 
+  
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
@@ -37,12 +38,13 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   }, []);
 
   function paint() {
-    console.log("paint")
+    // console.log("paint")
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return; const { x, y, radius } = circle;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (!ctx) return;
+    const { x, y, radius } = circle;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.stroke();
@@ -56,25 +58,32 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     const { x, y, radius } = circle;
     const { clientX, clientY } = e;
     let last = { x, y };
-    if (Math.pow((clientX - x), 2) + Math.pow((clientY - y), 2) < Math.pow(radius - DW / 2, 2)) {
+    if (
+      Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
+      Math.pow(radius - DW / 2, 2)
+    ) {
       setPosition(1);
       last.x = clientX;
       last.y = clientY;
       setLast(last);
-    } else if (clientX > x+radius-DW/2 && clientX < x +radius+DW/2&& clientY >y-DW/2 && clientY < y + DW/2) {
+    } else if (
+      clientX > x + radius - DW / 2 &&
+      clientX < x + radius + DW / 2 &&
+      clientY > y - DW / 2 &&
+      clientY < y + DW / 2
+    ) {
       setPosition(2);
       last.x = clientX;
       last.y = clientY;
       setLast(last);
-    } else
-      setPosition(0);
+    } else setPosition(0);
   };
   const onMouseEnter = (e: any) => {
     const { clientX, clientY } = e;
     console.log("enter", clientX, clientY);
   };
   const onMouseMove = (e: any) => {
-    console.log(position)
+    // console.log(position)
     const { clientX, clientY } = e;
     if (position > 0) {
       let { x, y, radius } = circle;
@@ -84,19 +93,19 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
         x += dx;
         y += dy;
         setCircle({ x, y, radius });
-        paint()
+        paint();
       } else {
         if (Math.abs(dx) < Math.abs(dy)) radius += dy;
         else radius += dx;
         setCircle({ x, y, radius });
-        paint()
+        paint();
       }
-      setLast({ x: clientX, y: clientY })
+      setLast({ x: clientX, y: clientY });
     }
   };
   const onMouseUp = (e: any) => {
     const { clientX, clientY } = e;
-    setPosition(0)
+    setPosition(0);
     // console.log("up", clientX, clientY);
   };
 
