@@ -5894,10 +5894,10 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-multiple-websockets@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npmmirror.com/multiple-websockets/-/multiple-websockets-0.1.2.tgz#f2060d723dc62410fe9f1e4e63a5776a611e891d"
-  integrity sha512-k2+fCNEabdqbaRvqzzc4ADdUdags/WgbCph0SLqALVKXPjTu5zHozFu4IIaxj3vJFItw8sSkaacC7+dWn/aH8g==
+multiple-websockets@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.npmmirror.com/multiple-websockets/-/multiple-websockets-0.1.4.tgz#132b05d25aa66943fa7043160a6f6cbcd3b61ee1"
+  integrity sha512-n8RXu6Kzpqe3SjYEEIicFalQdbviRoaiKsCqbY+ROKToH8Y4j7Go3dg98cgKxoZjsA+bonnwTaBVcIu7F2gtWQ==
 
 nanoid@^3.3.1:
   version "3.3.1"
