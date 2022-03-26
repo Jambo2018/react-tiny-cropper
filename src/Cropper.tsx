@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 interface propsType {
-  shap?: String; // circle , square, rectangle,polygon
+  shap?: string; // circle , square, rectangle,polygon
+  onResult:(url:string)=>void
 }
 const DW: number = 10;
 const Cropper: React.FC<propsType> = (props: propsType) => {
@@ -10,7 +11,6 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   const [position, setPosition] = useState(0);
   const [last, setLast] = useState({ x: 0, y: 0 });
   const { shap = "rectangle" } = props;
-const [img,setImg]=useState("");
   // const onCrop = () => {
   //   const imageElement: any = cropperRef?.current;
   //   const cropper: any = imageElement?.cropper;
@@ -66,7 +66,7 @@ const [img,setImg]=useState("");
       // cropper_ctx?.rect(0,0,500,400);
       // cropper_ctx?.fill();
       cropper_ctx?.drawImage(img,0,0,600,400)
-     setImg( cropper?.toDataURL())
+     props.onResult( cropper?.toDataURL())
     }
   }
 
@@ -143,7 +143,6 @@ const [img,setImg]=useState("");
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       />
-      <img src={img}/>
     </div> 
   );
 };
