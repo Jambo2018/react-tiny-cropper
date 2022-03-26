@@ -10,7 +10,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   const [position, setPosition] = useState(0);
   const [last, setLast] = useState({ x: 0, y: 0 });
   const { shap = "rectangle" } = props;
-
+const [img,setImg]=useState("");
   // const onCrop = () => {
   //   const imageElement: any = cropperRef?.current;
   //   const cropper: any = imageElement?.cropper;
@@ -49,8 +49,25 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.stroke();
     ctx.closePath();
-
     ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
+    
+
+    const cropper:HTMLCanvasElement=document.createElement("canvas");
+    cropper.width=600
+    cropper.height=400;
+    const cropper_ctx=cropper.getContext("2d");
+    let img=new Image();
+    img.setAttribute("crossOrigin",'anonymous')
+    img.src="https://jambo2018.github.io/img/top_img.jpeg"
+    img.onload=function(){
+      cropper_ctx?.beginPath();
+      cropper_ctx?.arc(x, y, radius, 0, 2 * Math.PI);
+      cropper_ctx?.clip();
+      // cropper_ctx?.rect(0,0,500,400);
+      // cropper_ctx?.fill();
+      cropper_ctx?.drawImage(img,0,0,600,400)
+     setImg( cropper?.toDataURL())
+    }
   }
 
   const onMouseDown = (e: any) => {
@@ -126,7 +143,8 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       />
-    </div>
+      <img src={img}/>
+    </div> 
   );
 };
 
