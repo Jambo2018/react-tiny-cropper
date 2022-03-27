@@ -53,19 +53,19 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     
 
     const cropper:HTMLCanvasElement=document.createElement("canvas");
-    cropper.width=600
-    cropper.height=400;
+    cropper.width=radius*2
+    cropper.height=radius*2
     const cropper_ctx=cropper.getContext("2d");
     let img=new Image();
     img.setAttribute("crossOrigin",'anonymous')
     img.src="https://jambo2018.github.io/img/top_img.jpeg"
     img.onload=function(){
       cropper_ctx?.beginPath();
-      cropper_ctx?.arc(x, y, radius, 0, 2 * Math.PI);
+      cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
       cropper_ctx?.clip();
       // cropper_ctx?.rect(0,0,500,400);
       // cropper_ctx?.fill();
-      cropper_ctx?.drawImage(img,0,0,600,400)
+      cropper_ctx?.drawImage(img,x-radius,y-radius,600,400,0,0,radius,radius)
      props.onResult( cropper?.toDataURL())
     }
   }
