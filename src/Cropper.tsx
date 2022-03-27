@@ -68,7 +68,6 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
       // console.log()
       const mW=600/img.width;
       const mH=400/img.height;
-console.log(mW,mH)
       cropper_ctx?.drawImage(img,(x-radius)/mW,(y-radius)/mH,radius*2/mW,radius*2/mH,0,0,radius*2,radius*2)
      props.onResult( cropper?.toDataURL())
     }
