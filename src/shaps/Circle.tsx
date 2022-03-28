@@ -3,6 +3,9 @@ interface propsType {
     shap?: string; // circle , square, rectangle,polygon
     onResult: (url: string) => void
 }
+/*******************************************/
+// useRef =>delete .current?
+/*******************************************/
 enum Position{out,in,dot};
  const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
