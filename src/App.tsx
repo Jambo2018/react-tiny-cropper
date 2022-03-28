@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <Cropper onResult={oncrop} />
-      <img src={img.toString()} />
+      <img src={img.toString()}/>
     </div>
   );
 }

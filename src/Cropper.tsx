@@ -53,8 +53,8 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     
 
     const cropper:HTMLCanvasElement=document.createElement("canvas");
-    // cropper.width=radius*2
-    // cropper.height=radius*2
+    cropper.width=radius*2
+    cropper.height=radius*2
     const cropper_ctx=cropper.getContext("2d");
     let img=new Image();
     img.setAttribute("crossOrigin",'anonymous')
