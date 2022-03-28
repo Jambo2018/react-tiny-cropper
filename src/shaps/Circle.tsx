@@ -6,12 +6,10 @@ interface propsType {
 
 const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
-    let lastX: number, lastY: number;
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
     const [position, setPosition] = useState(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
-    const { shap = "rectangle" } = props;
 
 
     // init canvas and paint the background
