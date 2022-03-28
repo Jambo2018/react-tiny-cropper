@@ -2,15 +2,17 @@ type Cors = { x: number, y: number };
 type Circle = { x: number, y: number, radius: number };
 enum Positon { out, in, dot };
 const DW: number = 10;
-let pos: Positon = 2;
+let pos: Positon = 0;
 let last: Cors = { x: 0, y: 0 }
 let circle: Circle = { x: 20, y: 20, radius: 50 }
-export let canvas_width: number=10, canvas_height: number=10;
-export function init(ctx: any): void {
+export let canvas_width: number, canvas_height: number;
+export function init(ctx: any,width:number,height:number): void {
     // if (!canvasRef.current) return;
     // const canvas: HTMLCanvasElement = canvasRef.current;
     // const ctx = canvas.getContext("2d");
     // if (!ctx) return;
+    canvas_width=width;
+    canvas_height=height;
     ctx.fillStyle = "#F40";
     // ctx.beginPath();
     // ctx.strokeStyle="#F40"

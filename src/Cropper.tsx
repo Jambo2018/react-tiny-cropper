@@ -26,9 +26,8 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     const canvas: HTMLCanvasElement = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    Circle.canvas_width=canvas.width;
-    Circle.canvas_height=canvas.height;
-    Circle.init(ctx);
+    const {width,height}=canvas;
+    Circle.init(ctx,width,height);
     // ctx.fillStyle = "#F40";
     // // ctx.beginPath();
     // // ctx.strokeStyle="#F40"
