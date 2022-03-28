@@ -3,14 +3,14 @@ interface propsType {
     shap?: string; // circle , square, rectangle,polygon
     onResult: (url: string) => void
 }
-
-const DW: number = 10;
+enum Position{out,in,dot};
+ const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
-    const [position, setPosition] = useState(0);
+    // const [position, setPosition] = useState(0);
+    let pos=useRef<Position>(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
-
 
     // init canvas and paint the background
     useEffect(() => {
@@ -72,7 +72,8 @@ const Circle: React.FC<propsType> = (props: propsType) => {
             Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
             Math.pow(radius - DW / 2, 2)
         ) {
-            setPosition(1);
+            // setPosition(1);
+            pos.current=1;
             last.x = clientX;
             last.y = clientY;
             setLast(last);
@@ -82,28 +83,33 @@ const Circle: React.FC<propsType> = (props: propsType) => {
             clientY > y - DW / 2 &&
             clientY < y + DW / 2
         ) {
-            setPosition(2);
+            // setPosition(2);
+            pos.current=2;
             last.x = clientX;
             last.y = clientY;
             setLast(last);
-        } else setPosition(0);
+        } else {
+            // setPosition(0);
+            pos.current=0;
+        }
+        // console.log(pos)
     };
     const onMouseEnter = (e: any) => {
         const { clientX, clientY } = e;
         console.log("enter", clientX, clientY);
     };
     const onMouseMove = (e: any) => {
-        // console.log(position)
+        console.log(pos)
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
         const { clientX, clientY } = e;
-        if (position > 0) {
+        if (pos.current > 0) {
             let { x, y, radius } = circle;
             const dx = clientX - last.x;
             const dy = clientY - last.y;
-            if (position === 1) {
+            if (pos.current === 1) {
                 x += dx;
                 y += dy;
                 setCircle({ x, y, radius });
@@ -119,7 +125,8 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     };
     const onMouseUp = (e: any) => {
         const { clientX, clientY } = e;
-        setPosition(0);
+        // setPosition(0);
+        pos.current=0;
         console.log("up", clientX, clientY);
     };
 
