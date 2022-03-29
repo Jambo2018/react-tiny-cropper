@@ -10,7 +10,6 @@ const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const src=props.src;
-    console.log(props.src)
     const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
     // const [position, setPosition] = useState(0);
     let pos = useRef<Position>(0);
