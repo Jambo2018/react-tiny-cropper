@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 interface propsType {
-    src:string,
+    src?:string,
     onResult: (url: string) => void
 }
 
@@ -44,7 +44,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         const cropper_ctx = cropper.getContext("2d");
         let img = new Image();
         img.setAttribute("crossOrigin", 'anonymous')
-        img.src = "https://jambo2018.github.io/img/top_img.jpeg"
+        img.src = props.src||"";
         img.onload = function () {
             cropper_ctx?.beginPath();
             cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);

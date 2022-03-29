@@ -2,6 +2,7 @@ import { useState } from "react";
 import Cropper from "./Cropper";
 import "./App.css";
 
+const url = "https://jambo2018.github.io/img/top_img.jpeg";
 function App() {
   const [img, setImg] = useState<string>("");
   const oncrop = (e:string) => {
@@ -9,7 +10,7 @@ function App() {
   };
   return (
     <div className="App">
-      <Cropper onResult={oncrop} />
+      <Cropper onResult={oncrop} shap="circle" image={url}/>
       <img src={img.toString()}/>
     </div>
   );
