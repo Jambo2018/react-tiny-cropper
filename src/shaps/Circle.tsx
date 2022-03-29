@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 interface propsType {
-    shap?: string; // circle , square, rectangle,polygon
+    src:string,
     onResult: (url: string) => void
 }
-/*******************************************/
-// useRef =>delete .current?
-/*******************************************/
-enum Position{out,in,dot};
- const DW: number = 10;
+
+
+enum Position { out, in, dot };
+const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const src=props.src;
+    console.log(props.src)
     const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
     // const [position, setPosition] = useState(0);
-    let pos=useRef<Position>(0);
+    let pos = useRef<Position>(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
 
     // init canvas and paint the background
@@ -21,22 +22,10 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-        const { width, height } = canvas;
-        ctx.fillStyle = "#F40";
-        // ctx.beginPath();
-        // ctx.strokeStyle="#F40"
-        // ctx.arcTo(100,100,100,100,100);
-        // ctx.stroke()
-        const { x, y, radius } = circle;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
-        ctx.closePath();
+        paint();
     }, []);
 
     function paint() {
-        // console.log("paint")
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -47,6 +36,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.closePath();
+        ctx.fillStyle = "#F40";
         ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
 
         const cropper: HTMLCanvasElement = document.createElement("canvas");
@@ -75,8 +65,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
             Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
             Math.pow(radius - DW / 2, 2)
         ) {
-            // setPosition(1);
-            pos.current=1;
+            pos.current = 1;
             last.x = clientX;
             last.y = clientY;
             setLast(last);
@@ -86,23 +75,18 @@ const Circle: React.FC<propsType> = (props: propsType) => {
             clientY > y - DW / 2 &&
             clientY < y + DW / 2
         ) {
-            // setPosition(2);
-            pos.current=2;
+            pos.current = 2;
             last.x = clientX;
             last.y = clientY;
             setLast(last);
         } else {
-            // setPosition(0);
-            pos.current=0;
+            pos.current = 0;
         }
-        // console.log(pos)
     };
     const onMouseEnter = (e: any) => {
         const { clientX, clientY } = e;
-        console.log("enter", clientX, clientY);
     };
     const onMouseMove = (e: any) => {
-        console.log(pos)
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -127,10 +111,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         }
     };
     const onMouseUp = (e: any) => {
-        const { clientX, clientY } = e;
-        // setPosition(0);
-        pos.current=0;
-        console.log("up", clientX, clientY);
+        pos.current = 0;
     };
 
     return (
