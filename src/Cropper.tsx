@@ -1,23 +1,37 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import Circle from "./shaps/Circle";
+import Rectangle from "./shaps/Rectangle";
+
+type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
 interface propsType {
-  shap: string; // circle , square, rectangle,polygon
-  image?:string,
+  type: Shap,
+  image: string,
   onResult: (url: string) => void
 }
-const DW: number = 10;
 const Cropper: React.FC<propsType> = (props: propsType) => {
-  const { shap = "rectangle" } = props;
+  const { type = "rectangle", image = "" } = props;
+  const ClipCom = () => {
+    switch (type) {
+      case "rectangle":
+        return <Rectangle onResult={props.onResult} src={image} />
+      case "circle":
+        return <Circle onResult={props.onResult} src={image} />
+        default:
+        throw new Error("wrong type,the type could only be circle,square,rectangle or polygon");
+        break;
+    }
+  }
 
   return (
     <div style={{ width: "600px", height: "400px" }}>
       <img
-        src={props.image}
+        src={image}
         width={600}
         height={400}
         style={{ position: "absolute", zIndex: "-1" }}
       />
-      <Circle onResult={props.onResult} src={props.image} />
+      {ClipCom()}
+      {/* <ClipCom/> */}
     </div>
   );
 };

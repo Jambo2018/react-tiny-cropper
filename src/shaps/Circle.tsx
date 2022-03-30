@@ -44,7 +44,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         const cropper_ctx = cropper.getContext("2d");
         let img = new Image();
         img.setAttribute("crossOrigin", 'anonymous')
-        img.src = props.src||"";
+        img.src = src||"";
         img.onload = function () {
             cropper_ctx?.beginPath();
             cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
@@ -57,6 +57,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     }
 
     const onMouseDown = (e: any) => {
+        // console.log("down")
         const { x, y, radius } = circle;
         const { clientX, clientY } = e;
         let last = { x, y };
@@ -83,9 +84,11 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         }
     };
     const onMouseEnter = (e: any) => {
+        // console.log("enter")
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
+        // console.log("move",pos.current)
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
