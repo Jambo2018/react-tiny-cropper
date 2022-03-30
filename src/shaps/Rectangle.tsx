@@ -10,7 +10,7 @@ const DW: number = 10;
 const Rectangle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const src = props.src;
-    const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
+    const [rec, setRec] = useState({ x: 100, y: 100, width: 100,height:100 });
     // const [position, setPosition] = useState(0);
     let pos = useRef<Position>(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
