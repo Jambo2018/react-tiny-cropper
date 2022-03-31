@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 interface propsType {
     src?: string,
+    square?:boolean,
     onResult: (url: string) => void
 }
 

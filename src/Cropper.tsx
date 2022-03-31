@@ -14,9 +14,11 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     switch (type) {
       case "rectangle":
         return <Rectangle onResult={props.onResult} src={image} />
+      case "square":
+        return <Rectangle onResult={props.onResult} src={image} square/>
       case "circle":
         return <Circle onResult={props.onResult} src={image} />
-        default:
+      default:
         throw new Error("wrong type,the type could only be circle,square,rectangle or polygon");
         break;
     }
