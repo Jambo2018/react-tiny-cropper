@@ -4,84 +4,84 @@ interface propsType {
     onResult: (url: string) => void
 }
 
-
-enum Position { out, in, top_left, top_right, bottom_right, bottom_left };
+enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
 const DW: number = 10;
 const Rectangle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const src = props.src;
-    const [rec, setRec] = useState({ x: 100, y: 100, width: 100,height:100 });
-    // const [position, setPosition] = useState(0);
+    const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
     let pos = useRef<Position>(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
 
     // init canvas and paint the background
     useEffect(() => {
-        if (!canvasRef.current) return;
-        const canvas: HTMLCanvasElement = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
         paint();
     }, []);
+
+
 
     function paint() {
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-        const { x, y, radius } = circle;
+        const { x, y, width, height } = rec;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#0F0"
+        ctx.rect(x, y, width, height);
         ctx.stroke();
-        ctx.closePath();
+
         ctx.fillStyle = "#F40";
-        ctx.fillRect(x + radius - DW / 2, y - DW / 2, DW, DW);
+        ctx.fillRect(x - DW / 2, y - DW / 2, DW, DW);
+        ctx.fillRect(x + width - DW / 2, y - DW / 2, DW, DW);
+        ctx.fillRect(x - DW / 2, y + height - DW / 2, DW, DW);
+        ctx.fillRect(x + width - DW / 2, y + height - DW / 2, DW, DW);
+        ctx.fillRect(x + width / 2 - DW / 2, y - DW / 2, DW, DW);
+        ctx.fillRect(x + width / 2 - DW / 2, y + height - DW / 2, DW, DW);
+        ctx.fillRect(x - DW / 2, y + height / 2 - DW / 2, DW, DW);
+        ctx.fillRect(x + width - DW / 2, y + height / 2 - DW / 2, DW, DW);
+        ctx.closePath();
+
 
         const cropper: HTMLCanvasElement = document.createElement("canvas");
-        cropper.width = radius * 2
-        cropper.height = radius * 2
+        cropper.width = width
+        cropper.height = height
         const cropper_ctx = cropper.getContext("2d");
         let img = new Image();
         img.setAttribute("crossOrigin", 'anonymous')
         img.src = src || "";
         img.onload = function () {
-            cropper_ctx?.beginPath();
-            cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
-            cropper_ctx?.clip();
             const mW = 600 / img.width;
             const mH = 400 / img.height;
-            cropper_ctx?.drawImage(img, (x - radius) / mW, (y - radius) / mH, radius * 2 / mW, radius * 2 / mH, 0, 0, radius * 2, radius * 2)
+            cropper_ctx?.drawImage(img, x / mW, y / mH, width / mW, height / mH, 0, 0, width, height)
             props.onResult(cropper?.toDataURL())
         }
     }
 
+    function isInArea(n0: number, n1: number, n: number) {
+        return n > n0 && n < n1
+    }
     const onMouseDown = (e: any) => {
         // console.log("down")
-        const { x, y, radius } = circle;
+        const { x, y, width, height } = rec;
         const { clientX, clientY } = e;
-        let last = { x, y };
         if (
-            Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
-            Math.pow(radius - DW / 2, 2)
+            isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
         ) {
-            pos.current = 1;
-            last.x = clientX;
-            last.y = clientY;
-            setLast(last);
+            pos.current = Position.in;
         } else if (
-            clientX > x + radius - DW / 2 &&
-            clientX < x + radius + DW / 2 &&
-            clientY > y - DW / 2 &&
-            clientY < y + DW / 2
+            isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
         ) {
-            pos.current = 2;
-            last.x = clientX;
-            last.y = clientY;
-            setLast(last);
+            pos.current = Position.top_left;
+        } else if (
+            isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
+        ) {
+            pos.current = Position.top_right;
         } else {
-            pos.current = 0;
+            pos.current = Position.out;
         }
+        setLast({ x: clientX,y: clientY  });
     };
     const onMouseEnter = (e: any) => {
         // console.log("enter")
@@ -94,23 +94,32 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
         const { clientX, clientY } = e;
-        if (pos.current > 0) {
-            let { x, y, radius } = circle;
-            const dx = clientX - last.x;
-            const dy = clientY - last.y;
-            if (pos.current === 1) {
+        if (pos.current === Position.out) return;
+        let { x, y, width, height } = rec;
+        const dx = clientX - last.x;
+        const dy = clientY - last.y;
+        const bx = x + width;
+        const by = y + height;
+        switch (pos.current) {
+            case Position.in:
                 x += dx;
                 y += dy;
-                setCircle({ x, y, radius });
-                paint();
-            } else {
-                if (Math.abs(dx) < Math.abs(dy)) radius += dy;
-                else radius += dx;
-                setCircle({ x, y, radius });
-                paint();
-            }
-            setLast({ x: clientX, y: clientY });
+                break;
+            case Position.top_left:
+                width = bx - x;
+                height = by - y;
+                break;
+            case Position.top_right:
+                height -= dy;
+                y = by - height;
+                width += dx;
+                break;
+            default: break;
         }
+        console.log(x,y,width,height)
+        setLast({ x: clientX, y: clientY });
+        setRec({ x, y, width, height });
+        paint();
     };
     const onMouseUp = (e: any) => {
         pos.current = 0;

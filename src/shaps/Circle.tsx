@@ -17,10 +17,6 @@ const Circle: React.FC<propsType> = (props: propsType) => {
 
     // init canvas and paint the background
     useEffect(() => {
-        if (!canvasRef.current) return;
-        const canvas: HTMLCanvasElement = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
         paint();
     }, []);
 
