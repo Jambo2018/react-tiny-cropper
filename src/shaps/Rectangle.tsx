@@ -151,16 +151,11 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
-        // console.log("move",pos.current)
-        if (!canvasRef.current) return;
-        const canvas: HTMLCanvasElement = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
         const { clientX, clientY } = e;
         if (pos.current === Position.out) return;
         let { x, y, width, height } = rec;
-        const dx = clientX - last.x;
-        const dy = clientY - last.y;
+        let dx = clientX - last.x;
+        let dy = clientY - last.y;
         const bx = x + width;
         const by = y + height;
         switch (pos.current) {
