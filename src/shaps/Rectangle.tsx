@@ -5,6 +5,7 @@ interface propsType {
 }
 
 enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
+
 const DW: number = 10;
 const Rectangle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,8 +29,28 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         const { x, y, width, height } = rec;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
+        ctx.setLineDash([0])
         ctx.strokeStyle = "#0F0"
         ctx.rect(x, y, width, height);
+        ctx.stroke();
+        
+        ctx.beginPath()
+        ctx.setLineDash([5])
+        ctx.moveTo(x + width / 3, y)
+        ctx.lineTo(x + width / 3, y + height)
+
+        ctx.moveTo(x + width / 3, y)
+        ctx.lineTo(x + width / 3, y + height)
+
+        ctx.moveTo(x + width * 2 / 3, y)
+        ctx.lineTo(x + width * 2 / 3, y + height)
+
+        ctx.moveTo(x, y + height / 3)
+        ctx.lineTo(x + width, y + height / 3)
+
+        ctx.moveTo(x, y + height * 2 / 3)
+        ctx.lineTo(x + width, y + height * 2 / 3)
+
         ctx.stroke();
 
         ctx.fillStyle = "#F40";
@@ -58,7 +79,24 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
             props.onResult(cropper?.toDataURL())
         }
     }
-
+    useEffect(() => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        canvas.style.cursor = "pointer"
+        if (!pos) return;
+        // const ctx = canvas.getContext("2d");
+        switch (pos?.current) {
+            case Position.in:
+                canvas.style.cursor = "move";
+                break;
+            case Position.out:
+                canvas.style.cursor = "pointer";
+                break;
+            default:
+                canvas.style.cursor = "auto";
+                break;
+        }
+    }, [pos.current])
     function isInArea(n0: number, n1: number, n: number) {
         return n > n0 && n < n1
     }
