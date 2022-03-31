@@ -78,10 +78,34 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
             isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
         ) {
             pos.current = Position.top_right;
+        } else if (
+            isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        ) {
+            pos.current = Position.bottom_right;
+        } else if (
+            isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        ) {
+            pos.current = Position.bottom_left;
+        } else if (
+            isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
+        ) {
+            pos.current = Position.top;
+        } else if (
+            isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
+        ) {
+            pos.current = Position.right;
+        } else if (
+            isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        ) {
+            pos.current = Position.bottom;
+        } else if (
+            isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
+        ) {
+            pos.current = Position.left;
         } else {
             pos.current = Position.out;
         }
-        setLast({ x: clientX,y: clientY  });
+        setLast({ x: clientX, y: clientY });
     };
     const onMouseEnter = (e: any) => {
         // console.log("enter")
@@ -106,6 +130,8 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
                 y += dy;
                 break;
             case Position.top_left:
+                x = clientX;
+                y = clientY;
                 width = bx - x;
                 height = by - y;
                 break;
@@ -114,9 +140,32 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
                 y = by - height;
                 width += dx;
                 break;
+            case Position.bottom_right:
+                width += dx;
+                height += dy
+                break;
+            case Position.bottom_left:
+                x = clientX;
+                width = bx - x
+                height += dy;
+                break;
+            case Position.top:
+                y = clientY;
+                height = by - y;
+                break;
+            case Position.bottom:
+                height += dy;
+                break;
+            case Position.right:
+                width += dx
+                break;
+            case Position.left:
+                x = clientX;
+                width = bx - x
+                break;
             default: break;
         }
-        console.log(x,y,width,height)
+        console.log(x, y, width, height)
         setLast({ x: clientX, y: clientY });
         setRec({ x, y, width, height });
         paint();
