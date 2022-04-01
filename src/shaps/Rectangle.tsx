@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Position, DW, on_down, on_move } from "./corCaculate";
+import { Position, DW, on_down, on_move, rec_curser,square_curser } from "./corCaculate";
 interface propsType {
     src?: string,
     square?: boolean,
@@ -54,14 +54,16 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         ctx.stroke();
 
         ctx.fillStyle = "#F40";
-        ctx.fillRect(x - DW / 2, y - DW / 2, DW, DW);
-        ctx.fillRect(x + width - DW / 2, y - DW / 2, DW, DW);
-        ctx.fillRect(x - DW / 2, y + height - DW / 2, DW, DW);
+        if (!props.square) {
+            ctx.fillRect(x - DW / 2, y - DW / 2, DW, DW);
+            ctx.fillRect(x + width - DW / 2, y - DW / 2, DW, DW);
+            ctx.fillRect(x - DW / 2, y + height - DW / 2, DW, DW);
+            ctx.fillRect(x + width / 2 - DW / 2, y - DW / 2, DW, DW);
+            ctx.fillRect(x - DW / 2, y + height / 2 - DW / 2, DW, DW);
+            ctx.fillRect(x + width / 2 - DW / 2, y + height - DW / 2, DW, DW);
+            ctx.fillRect(x + width - DW / 2, y + height / 2 - DW / 2, DW, DW);
+        }
         ctx.fillRect(x + width - DW / 2, y + height - DW / 2, DW, DW);
-        ctx.fillRect(x + width / 2 - DW / 2, y - DW / 2, DW, DW);
-        ctx.fillRect(x + width / 2 - DW / 2, y + height - DW / 2, DW, DW);
-        ctx.fillRect(x - DW / 2, y + height / 2 - DW / 2, DW, DW);
-        ctx.fillRect(x + width - DW / 2, y + height / 2 - DW / 2, DW, DW);
         ctx.closePath();
 
 
@@ -79,24 +81,7 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
             props.onResult(cropper?.toDataURL())
         }
     }
-    useEffect(() => {
-        if (!canvasRef.current) return;
-        const canvas: HTMLCanvasElement = canvasRef.current;
-        canvas.style.cursor = "pointer"
-        if (!pos) return;
-        // const ctx = canvas.getContext("2d");
-        switch (pos?.current) {
-            case Position.in:
-                canvas.style.cursor = "move";
-                break;
-            case Position.out:
-                canvas.style.cursor = "pointer";
-                break;
-            default:
-                canvas.style.cursor = "auto";
-                break;
-        }
-    }, [pos.current])
+
     function isInArea(n0: number, n1: number, n: number) {
         return n > n0 && n < n1
     }
@@ -111,8 +96,17 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
+        let p = on_down(rec, e);
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        if (props.square)
+            canvas.style.cursor = square_curser[p]
+        else
+            canvas.style.cursor = rec_curser[p]
+
         if (pos.current === Position.out) return;
-        const { x, y, width, height } = on_move(rec, e, last, pos.current,props.square);
+
+        const { x, y, width, height } = on_move(rec, e, last, pos.current, props.square);
         setLast({ x: e.clientX, y: e.clientY });
         setRec({ x, y, width, height });
         paint();

@@ -1,4 +1,6 @@
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
+export const rec_curser=["default","move","se-resize","sw-resize","se-resize","ne-resize","n-resize","e-resize","n-resize","e-resize"]
+export const square_curser=["default","move","default","default","se-resize","default","default","default","default","default"]
 export const DW: number = 10;
 type Rectangle = {
     x: number,
