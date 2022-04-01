@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Position, DW, on_rectagle_down, on_rectagle_move } from "./corCaculate";
+import { Position, DW, on_down, on_move } from "./corCaculate";
 interface propsType {
     src?: string,
     square?: boolean,
@@ -103,7 +103,7 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     const onMouseDown = (e: any) => {
         // console.log("down")
         const { clientX: x, clientY: y } = e;
-        pos.current = on_rectagle_down(rec, e);
+        pos.current = on_down(rec, e);
         setLast({ x, y });
     };
     const onMouseEnter = (e: any) => {
@@ -112,7 +112,7 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     };
     const onMouseMove = (e: any) => {
         if (pos.current === Position.out) return;
-        const { x, y, width, height } = on_rectagle_move(rec, e, last, pos.current);
+        const { x, y, width, height } = on_move(rec, e, last, pos.current,props.square);
         setLast({ x: e.clientX, y: e.clientY });
         setRec({ x, y, width, height });
         paint();

@@ -18,7 +18,7 @@ export function isInArea(n0: number, n1: number, n: number) {
     return n > n0 && n < n1
 }
 
-export function on_rectagle_down(rec: Rectangle, client: Cors): number {
+export function on_down(rec: Rectangle, client: Cors): number {
     const { x, y, width, height } = rec;
     const { clientX, clientY } = client;
     let pos;
@@ -64,7 +64,7 @@ export function on_rectagle_down(rec: Rectangle, client: Cors): number {
     return pos;
 }
 
-export function on_rectagle_move(rec: Rectangle, client: Cors, last: Last, pos: Position): Rectangle {
+export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, square?: boolean): Rectangle {
     const { clientX, clientY } = client;
     let { x, y, width, height } = rec;
     let dx = clientX - last.x;
@@ -77,42 +77,52 @@ export function on_rectagle_move(rec: Rectangle, client: Cors, last: Last, pos: 
             y += dy;
             break;
         case Position.top_left:
+            if (square) break;
             x = clientX;
             y = clientY;
             width = bx - x;
             height = by - y;
             break;
         case Position.top_right:
+            if (square) break;
             height -= dy;
             y = by - height;
             width += dx;
             break;
         case Position.bottom_right:
+            if (square) {
+                if (Math.abs(dx) < Math.abs(dy)) dy = dx;
+                else dx = dy;
+            }
             width += dx;
             height += dy
             break;
         case Position.bottom_left:
+            if (square) break;
             x = clientX;
             width = bx - x
             height += dy;
             break;
         case Position.top:
+            if (square) break;
             y = clientY;
             height = by - y;
             break;
         case Position.bottom:
+            if (square) break;
             height += dy;
             break;
         case Position.right:
+            if (square) break;
             width += dx
             break;
         case Position.left:
+            if (square) break;
             x = clientX;
             width = bx - x
             break;
         default: break;
     }
-    return {x,y,width,height};
+    return { x, y, width, height };
 }
-
 
