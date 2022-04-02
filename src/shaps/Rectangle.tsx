@@ -82,9 +82,7 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         }
     }
 
-    function isInArea(n0: number, n1: number, n: number) {
-        return n > n0 && n < n1
-    }
+
     const onMouseDown = (e: any) => {
         // console.log("down")
         const { clientX: x, clientY: y } = e;
