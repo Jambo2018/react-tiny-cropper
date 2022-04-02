@@ -15,12 +15,11 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
     let a = [];
     for (let i = 0; i < props.dots; i++) {
-        console.log(Math.round(Math.cos((i / props.dots) * 2 * Math.PI)), Math.round(Math.sin((i / props.dots) * 2 * Math.PI)))
         let angel;
-        if(props.dots%2===1){
+        if (props.dots % 2 === 1) {
             angel = (i / props.dots) * 2 * Math.PI - Math.PI / 2;
-        }else{
-            angel = ((i+0.5) / props.dots) * 2 * Math.PI ;
+        } else {
+            angel = ((i + 0.5) / props.dots) * 2 * Math.PI;
         }
         let cos = (Math.cos(angel)).toFixed(3);
         let sin = (Math.sin(angel)).toFixed(3);
@@ -30,7 +29,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
     const [polygon, setPolygon] = useState<Cors[]>(a);
     const [last, setLast] = useState({ x: 0, y: 0 });
-    const pos = useRef<Position>(0);
+    const pos = useRef<number>(props.dots);
     const press = useRef<boolean>(false);
 
     // init canvas and paint the background
@@ -75,20 +74,34 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
         // }
     }
 
-    const setCursor = (p: Position) => {
+    const setCursor = (p: number) => {
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
-        if (props.square)
-            canvas.style.cursor = square_curser[p]
+        if (p === props.dots)
+            canvas.style.cursor = "default"
         else
-            canvas.style.cursor = rec_curser[p]
+            canvas.style.cursor = "move"
+    }
+    function isInArea(n0: number, n1: number, n: number) {
+        return n > n0 && n < n1
+    }
+
+    function on_down(polygon: Cors[], e: Cors): number {
+        for (let i = 0; i < props.dots; i++) {
+            if (
+                isInArea(polygon[i].x - DW / 2, polygon[i].x + DW / 2, e.x) && isInArea(polygon[i].y - DW / 2, polygon[i].y + DW / 2, e.y)
+            ) {
+                return i;
+            }
+        }
+        return props.dots;
     }
 
     const onMouseDown = (e: any) => {
         // console.log("down")
         press.current = true;
         const { clientX: x, clientY: y } = e;
-        // pos.current = on_down(rec, e);
+        pos.current = on_down(polygon, { x, y });
         setCursor(pos.current);
         setLast({ x, y });
     };
@@ -97,20 +110,20 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
-        // if (!press.current) {
-        //     let p = on_down(rec, e);
-        //     setCursor(p)
-        // }
-        // if (pos.current === Position.out)
-        //     return;
-        // const { x, y, width, height } = on_move(rec, e, last, pos.current, props.square);
-        // setLast({ x: e.clientX, y: e.clientY });
-        // setRec({ x, y, width, height });
+        const { clientX: x, clientY: y } = e;
+        if (!press.current) {
+            let p = on_down(polygon,  { x, y });
+            setCursor(p)
+        }
+        if (pos.current === props.dots)
+            return;
+        polygon[pos.current] = { x, y };
+        setPolygon(polygon);
         paint();
     };
     const onMouseUp = (e: any) => {
         press.current = false;
-        pos.current = 0;
+        pos.current = props.dots;
     };
 
     return (
