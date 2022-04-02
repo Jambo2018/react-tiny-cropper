@@ -1,19 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
+
+
+
 interface propsType {
-    src?:string,
+    src?: string,
     onResult: (url: string) => void
 }
 
-
+type Cors = {
+    clientX: number,
+    clientY: number
+}
 enum Position { out, in, dot };
+const circle_curser = ["default", "move", "e-resize"]
 const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const src=props.src;
+    const src = props.src;
     const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
     // const [position, setPosition] = useState(0);
     let pos = useRef<Position>(0);
     const [last, setLast] = useState({ x: 0, y: 0 });
+    const press = useRef<boolean>(false);
+
+    const setCursor = (p: Position) => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        canvas.style.cursor = circle_curser[p]
+    }
+
 
     // init canvas and paint the background
     useEffect(() => {
@@ -40,7 +55,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         const cropper_ctx = cropper.getContext("2d");
         let img = new Image();
         img.setAttribute("crossOrigin", 'anonymous')
-        img.src = src||"";
+        img.src = src || "";
         img.onload = function () {
             cropper_ctx?.beginPath();
             cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
@@ -52,38 +67,42 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         }
     }
 
-    const onMouseDown = (e: any) => {
-        // console.log("down")
+    const on_down = function (c: object, e: Cors) {
         const { x, y, radius } = circle;
         const { clientX, clientY } = e;
-        let last = { x, y };
         if (
             Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
             Math.pow(radius - DW / 2, 2)
         ) {
-            pos.current = 1;
-            last.x = clientX;
-            last.y = clientY;
-            setLast(last);
+            return Position.in;
         } else if (
             clientX > x + radius - DW / 2 &&
             clientX < x + radius + DW / 2 &&
             clientY > y - DW / 2 &&
             clientY < y + DW / 2
         ) {
-            pos.current = 2;
-            last.x = clientX;
-            last.y = clientY;
-            setLast(last);
+            return Position.dot;
         } else {
-            pos.current = 0;
+            return Position.out;
         }
+    }
+    const onMouseDown = (e: any) => {
+        // console.log("down")
+        press.current = true;
+        const { clientX: x, clientY: y } = e;
+        pos.current = on_down(circle, e);
+        setCursor(pos.current);
+        setLast({ x, y });
     };
     const onMouseEnter = (e: any) => {
         // console.log("enter")
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
+        if (!press.current) {
+            let p = on_down(circle, e);
+            setCursor(p)
+        }
         // console.log("move",pos.current)
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
@@ -109,6 +128,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         }
     };
     const onMouseUp = (e: any) => {
+        press.current = false;
         pos.current = 0;
     };
 
