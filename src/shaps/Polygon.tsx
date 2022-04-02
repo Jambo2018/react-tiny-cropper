@@ -59,19 +59,32 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
         ctx.closePath();
 
 
-        // const cropper: HTMLCanvasElement = document.createElement("canvas");
-        // cropper.width = width
-        // cropper.height = height
-        // const cropper_ctx = cropper.getContext("2d");
-        // let img = new Image();
-        // img.setAttribute("crossOrigin", 'anonymous')
-        // img.src = src || "";
-        // img.onload = function () {
-        //     const mW = 600 / img.width;
-        //     const mH = 400 / img.height;
-        //     cropper_ctx?.drawImage(img, x / mW, y / mH, width / mW, height / mH, 0, 0, width, height)
-        //     props.onResult(cropper?.toDataURL())
-        // }
+        const cropper: HTMLCanvasElement = document.createElement("canvas");
+        let x_max: number=0, x_min: number=0, y_max: number=0, y_min: number=0;
+        polygon.forEach(item => {
+            x_max = Math.max(x_max, item.x)
+            x_min = Math.min(x_min, item.x)
+            y_max = Math.max(y_max, item.y)
+            y_min = Math.min(y_min, item.y)
+        })
+        cropper.width = x_max - x_min;
+        cropper.height = y_max - y_min;
+        const cropper_ctx = cropper.getContext("2d");
+        let img = new Image();
+        img.setAttribute("crossOrigin", 'anonymous')
+        img.src = src || "";
+        img.onload = function () {
+            cropper_ctx?.beginPath();
+            polygon.forEach(item=>{
+                cropper_ctx?.lineTo(item.x, item.y);
+            })
+            cropper_ctx?.lineTo(polygon[0].x, polygon[0].y);
+            cropper_ctx?.clip();
+            const mW = 600 / img.width;
+            const mH = 400 / img.height;
+            cropper_ctx?.drawImage(img, x_min / mW, y_min / mH, cropper.width / mW, cropper.height / mH, 0, 0, cropper.width, cropper.height )
+            props.onResult(cropper?.toDataURL())
+        }
     }
 
     const setCursor = (p: number) => {
@@ -112,7 +125,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const onMouseMove = (e: any) => {
         const { clientX: x, clientY: y } = e;
         if (!press.current) {
-            let p = on_down(polygon,  { x, y });
+            let p = on_down(polygon, { x, y });
             setCursor(p)
         }
         if (pos.current === props.dots)
