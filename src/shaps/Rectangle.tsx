@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Position, DW, on_down, on_move, rec_curser,square_curser } from "./corCaculate";
+import { Position, DW, on_down, on_move, rec_curser, square_curser } from "./corCaculate";
 interface propsType {
     src?: string,
     square?: boolean,
@@ -11,9 +11,9 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const src = props.src;
     const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
-    const pos = useRef<Position>(0);
-    const press=useRef<boolean>(false);
     const [last, setLast] = useState({ x: 0, y: 0 });
+    const pos = useRef<Position>(0);
+    const press = useRef<boolean>(false);
 
     // init canvas and paint the background
     useEffect(() => {
@@ -83,12 +83,21 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         }
     }
 
+    const setCursor = (p: Position) => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        if (props.square)
+            canvas.style.cursor = square_curser[p]
+        else
+            canvas.style.cursor = rec_curser[p]
+    }
 
     const onMouseDown = (e: any) => {
         // console.log("down")
+        press.current = true;
         const { clientX: x, clientY: y } = e;
-        press.current=true;
         pos.current = on_down(rec, e);
+        setCursor(pos.current);
         setLast({ x, y });
     };
     const onMouseEnter = (e: any) => {
@@ -96,26 +105,19 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
         const { clientX, clientY } = e;
     };
     const onMouseMove = (e: any) => {
-        let p = on_down(rec, e);
-        if (!canvasRef.current) return;
-        const canvas: HTMLCanvasElement = canvasRef.current;
-        if (props.square)
-            canvas.style.cursor = square_curser[p]
-        else
-            canvas.style.cursor = rec_curser[p]
-
-        console.log(press.current)
-        if(!press.current)return;
-        pos.current = on_down(rec, e);
-        if (pos.current === Position.out) return;
-        
+        if (!press.current) {
+            let p = on_down(rec, e);
+            setCursor(p)
+        }
+        if (pos.current === Position.out)
+            return;
         const { x, y, width, height } = on_move(rec, e, last, pos.current, props.square);
         setLast({ x: e.clientX, y: e.clientY });
         setRec({ x, y, width, height });
         paint();
     };
     const onMouseUp = (e: any) => {
-        press.current=false;
+        press.current = false;
         pos.current = 0;
     };
 
