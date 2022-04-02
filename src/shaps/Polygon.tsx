@@ -60,13 +60,14 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
 
         const cropper: HTMLCanvasElement = document.createElement("canvas");
-        let x_max: number=0, x_min: number=0, y_max: number=0, y_min: number=0;
+        let x_max: number = 0, x_min: number = canvas.width, y_max: number = 0, y_min: number = canvas.height;
         polygon.forEach(item => {
             x_max = Math.max(x_max, item.x)
             x_min = Math.min(x_min, item.x)
             y_max = Math.max(y_max, item.y)
             y_min = Math.min(y_min, item.y)
         })
+        console.log(x_min, y_min,x_max, y_max)
         cropper.width = x_max - x_min;
         cropper.height = y_max - y_min;
         const cropper_ctx = cropper.getContext("2d");
@@ -75,14 +76,17 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
         img.src = src || "";
         img.onload = function () {
             cropper_ctx?.beginPath();
-            polygon.forEach(item=>{
+            cropper_ctx?.fillRect(0,0,canvas.width,canvas.height);
+            cropper_ctx?.moveTo(polygon[0].x, polygon[0].y);
+            polygon.forEach(item => {
                 cropper_ctx?.lineTo(item.x, item.y);
             })
-            cropper_ctx?.lineTo(polygon[0].x, polygon[0].y);
-            cropper_ctx?.clip();
+            // cropper_ctx?.lineTo(polygon[0].x, polygon[0].y);
+            // cropper_ctx?.closePath();
+            cropper_ctx?.clip("nonzero");
             const mW = 600 / img.width;
             const mH = 400 / img.height;
-            cropper_ctx?.drawImage(img, x_min / mW, y_min / mH, cropper.width / mW, cropper.height / mH, 0, 0, cropper.width, cropper.height )
+            cropper_ctx?.drawImage(img, x_min / mW, y_min / mH, cropper.width / mW, cropper.height / mH, 0, 0, cropper.width, cropper.height)
             props.onResult(cropper?.toDataURL())
         }
     }
