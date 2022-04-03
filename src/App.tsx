@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Cropper from "./Cropper";
+import image from  "./assets/test.jpeg";
 import "./App.css";
 
-const url = "https://jambo2018.github.io/img/top_img.jpeg";
 function App() {
   const [img, setImg] = useState<string>("");
   const oncrop = (e:string) => {
@@ -10,7 +10,7 @@ function App() {
   };
   return (
     <div className="App">
-      <Cropper onResult={oncrop} type="polygon" nodesNum={4} image={url}/>
+      <Cropper onResult={oncrop} type="polygon" nodesNum={4} image={image}/>
       <img src={img.toString()}/>
     </div>
   );
