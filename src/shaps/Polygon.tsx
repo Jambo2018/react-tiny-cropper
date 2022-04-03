@@ -83,7 +83,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
             })
             // cropper_ctx?.lineTo(polygon[0].x, polygon[0].y);
             // cropper_ctx?.closePath();
-            cropper_ctx?.clip("nonzero");
+            cropper_ctx?.clip();
             const mW = 600 / img.width;
             const mH = 400 / img.height;
             cropper_ctx?.drawImage(img, x_min / mW, y_min / mH, cropper.width / mW, cropper.height / mH, 0, 0, cropper.width, cropper.height)
