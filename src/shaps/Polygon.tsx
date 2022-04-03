@@ -78,16 +78,12 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
             const mW = 600 / img.width;
             const mH = 400 / img.height;
             cropper_ctx?.beginPath();
-            cropper_ctx?.fillRect(0,0,canvas.width,canvas.height);
-            cropper_ctx?.moveTo(polygon[0].x, polygon[0].y);
             polygon.forEach(item => {
-                cropper_ctx?.lineTo(item.x, item.y);
+                cropper_ctx?.lineTo(item.x-x_min, item.y-y_min);
             })
-            cropper_ctx?.lineTo(polygon[0].x, polygon[0].y);
-            cropper_ctx?.closePath();
+            cropper_ctx?.lineTo(polygon[0].x-x_min, polygon[0].y-y_min);
             cropper_ctx?.clip();
             cropper_ctx?.drawImage(img, x_min / mW, y_min / mH, cropper.width / mW, cropper.height / mH, 0, 0, cropper.width, cropper.height)
-            // cropper_ctx?.rect(x_min,y_min,cropper.width,cropper.height)
             props.onResult(cropper?.toDataURL())
         }
     }
