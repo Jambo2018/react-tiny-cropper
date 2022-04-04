@@ -10,10 +10,11 @@ function App() {
   };
   return (
     <div className="App">
-      <Cropper onResult={oncrop} type="polygon" nodesNum={4} image={image}/>
+      <Cropper onResult={oncrop} type="polygon" nodesNum={10} image={image}/>
       <img src={img.toString()}/>
     </div>
   );
 }
 
 export default App;
+ 
