@@ -42,6 +42,24 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         if (!ctx) return;
         const { x, y, radius } = circle;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+ctx.beginPath();
+ctx.lineTo(0,0)
+ctx.arc(x,y,radius,-Math.PI, 0)
+ctx.moveTo(x+radius,y)
+ctx.lineTo(canvas.width,0)
+ctx.lineTo(0,0)
+ctx.moveTo(canvas.width,0)
+ctx.lineTo(x+radius,y)
+ctx.arc(x,y,radius,0,Math.PI)
+ctx.lineTo(0,0)
+ctx.lineTo(0,canvas.height)
+ctx.lineTo(canvas.width,canvas.height)
+ctx.lineTo(canvas.width,0)
+
+
+ctx.fillStyle="rgba(0,0,0,0.5)"
+ctx.fill()
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.stroke();
