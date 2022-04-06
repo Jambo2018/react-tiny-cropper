@@ -1,6 +1,7 @@
 # TodoList
 - backgroundimg/grid/mask
 - limit size
+- priview & crop callback?
 - customize box size
 - package
 - example
