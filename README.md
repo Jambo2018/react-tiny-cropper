@@ -1,3 +1,11 @@
+# TodoList
+- backgroundimg/grid/mask
+- limit size
+- customize box size
+- package
+- example
+- readme
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
