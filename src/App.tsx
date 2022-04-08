@@ -26,7 +26,7 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-      <Cropper onResult={oncrop} type="circle" nodesNum={10} image={image}/>
+      <Cropper onResult={oncrop} type="polygon" nodesNum={10} image={image}/>
       <img src={img.toString()}/>
     </div>
   );

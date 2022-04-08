@@ -155,12 +155,24 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const { clientX, clientY } = e;
   };
   const onMouseMove = (e: any) => {
-    const { clientX: x, clientY: y } = e;
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+    let { clientX: x, clientY: y } = e;
     if (!press.current) {
       let p = on_down(polygon, { x, y });
       setCursor(p);
     }
     if (pos.current === props.dots) return;
+
+    if (x < 0)
+      x = 0
+    if (y < 0)
+      y = 0
+    if (x > canvas.width)
+      x = canvas.width
+    if (y > canvas.height)
+      y = canvas.height
+console.log(x,y)
     polygon[pos.current] = { x, y };
     setPolygon(polygon);
     paint();
