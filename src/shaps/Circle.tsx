@@ -138,14 +138,22 @@ const Circle: React.FC<propsType> = (props: propsType) => {
       if (pos.current === 1) {
         x += dx;
         y += dy;
-        setCircle({ x, y, radius });
-        paint();
       } else {
         if (Math.abs(dx) < Math.abs(dy)) radius += dy;
         else radius += dx;
-        setCircle({ x, y, radius });
-        paint();
       }
+      if (radius < 10)
+        radius = 10
+      if (x < radius)
+        x = radius
+      if (y < radius)
+        y = radius
+      if (x + radius > canvas.width)
+        x = canvas.width - radius
+      if (y + radius > canvas.height)
+        y = canvas.height - radius
+      setCircle({ x, y, radius });
+      paint();
       setLast({ x: clientX, y: clientY });
     }
   };
