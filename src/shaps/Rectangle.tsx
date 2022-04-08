@@ -121,18 +121,28 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     const { clientX, clientY } = e;
   };
   const onMouseMove = (e: any) => {
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
     if (!press.current) {
       let p = on_down(rec, e);
       setCursor(p);
     }
     if (pos.current === Position.out) return;
-    const { x, y, width, height } = on_move(
+    let { x, y, width, height } = on_move(
       rec,
       e,
       last,
       pos.current,
       props.square
     );
+    
+    if(width<15)width=15
+    if(height<15)height=15
+    if(x<0)x=0
+    if(y<0)y=0
+    if(x+width>canvas.width)x=canvas.width-width
+    if(y+height>canvas.height)y=canvas.height-height
+
     setLast({ x: e.clientX, y: e.clientY });
     setRec({ x, y, width, height });
     paint();

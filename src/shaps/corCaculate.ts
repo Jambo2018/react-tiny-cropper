@@ -125,6 +125,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             break;
         default: break;
     }
+
     return { x, y, width, height };
 }
 
