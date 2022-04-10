@@ -41,7 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "multiple-websockets": "^0.1.4"
-  }
+  "dependencies": {}
 }
