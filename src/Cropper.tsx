@@ -8,6 +8,7 @@ interface propsType {
   type: Shap,
   nodesNum?: number,
   image: string,
+  style:object,
   onResult: (url: string) => void
 }
 const Cropper: React.FC<propsType> = (props: propsType) => {
@@ -29,7 +30,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   }
 
   return (
-    <div style={{ width: "600px", height: "400px" }}>
+    <div style={{ width: "100%", height: "100%" ,...props.style,background:"#aaa"}}>
       <img
         src={image}
         width={600}
