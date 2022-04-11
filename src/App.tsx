@@ -10,7 +10,7 @@ type imageProps={
 }
 function App() {
   const [preview, setPreview] = useState<string>("");
-  const [img, setImage] = useState<imageProps>();
+  const [img, setImage] = useState<imageProps>({image:"",canvasWidth:0,canvasHeight:0});
   const oncrop = (e: string) => {
     setPreview(e);
   };
@@ -24,7 +24,6 @@ function App() {
   //   setCount2(count2 + 1);
   // }, [count2]);
   const onSelectImage = (e: any) => {
-    console.log(e.target.files[0])
     let reader = new FileReader();
     reader.onload = function () {
       if (typeof this.result === "string") {
@@ -54,7 +53,7 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-      <Cropper onResult={oncrop} type="square" nodesNum={10} {...img} style={{ width: "50%", height: "30vh" }} />
+      <Cropper onResult={oncrop} type="rectangle" nodesNum={10} {...img} style={{ width: "50%", height: "30vh" }} />
       <img src={preview.toString()} />
     </div>
   );

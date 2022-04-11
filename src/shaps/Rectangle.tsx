@@ -18,6 +18,7 @@ interface propsType {
 const Rectangle: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const {src,canvasWidth,canvasHeight} = props;
+  console.log(canvasHeight,canvasWidth)
   const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
