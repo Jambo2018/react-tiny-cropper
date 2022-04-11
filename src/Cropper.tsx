@@ -1,43 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Circle from "./shaps/Circle";
 import Rectangle from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
+import "./App.css";
 
 type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
 interface propsType {
   type: Shap,
   nodesNum?: number,
   image: string,
-  style:object,
+  style: object,
   onResult: (url: string) => void
 }
 const Cropper: React.FC<propsType> = (props: propsType) => {
   const { type = "rectangle", image = "" } = props;
-  const ClipCom = () => {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const ClipCom = useMemo(() => {
+    if (!boxRef.current) return null;
+    const { clientWidth, clientHeight } = boxRef.current;
+    const config = { 
+      width: clientWidth, 
+      height: clientHeight,
+      src:image
+    }
+    
     switch (type) {
       case "rectangle":
-        return <Rectangle onResult={props.onResult} src={image} />
+        return <Rectangle onResult={props.onResult} {...config} />
       case "square":
-        return <Rectangle onResult={props.onResult} src={image} square />
+        return <Rectangle onResult={props.onResult} {...config}  square />
       case "circle":
-        return <Circle onResult={props.onResult} src={image} />
+        return <Circle onResult={props.onResult} {...config}  />
       case "polygon":
-        return <Polygon onResult={props.onResult} dots={props.nodesNum||4} src={image} />
+        return <Polygon onResult={props.onResult} dots={props.nodesNum || 4} {...config}  />
       default:
         throw new Error("wrong type,the type could only be circle,square,rectangle or polygon");
-        break;
+        return;
     }
-  }
+  }, [type, image])
+
 
   return (
-    <div style={{border:"1px solid #f40",position:"relative", width: "100%", height: "100%" ,...props.style,background:"#aaa",backgroundImage:`url(${image})`}}>
+    <div className="box" style={{ border: "5px solid #f40", ...props.style, backgroundImage: `url(${image})` }} ref={boxRef}>
       {/* <img
         src={image}
         // width={600}
         // height={400}
         style={{ position: "absolute", zIndex: "-1", }}
       /> */}
-      {ClipCom()}
+      {ClipCom}
       {/* <ClipCom/> */}
     </div>
   );
