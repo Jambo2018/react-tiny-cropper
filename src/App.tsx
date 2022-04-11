@@ -40,7 +40,7 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-        <Cropper onResult={oncrop} type="square" nodesNum={10} image={image} style={{width:"50%",height:"30vh"}}/>
+        <Cropper onResult={oncrop} type="square" nodesNum={10} image={image} style={{width:"50vw",height:"30vh"}}/>
       <img src={img.toString()} />
     </div>
   );

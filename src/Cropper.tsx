@@ -30,13 +30,13 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   }
 
   return (
-    <div style={{ width: "100%", height: "100%" ,...props.style,background:"#aaa"}}>
-      <img
+    <div style={{border:"1px solid #f40",position:"relative", width: "100%", height: "100%" ,...props.style,background:"#aaa",backgroundImage:`url(${image})`}}>
+      {/* <img
         src={image}
-        width={600}
-        height={400}
-        style={{ position: "absolute", zIndex: "-1" }}
-      />
+        // width={600}
+        // height={400}
+        style={{ position: "absolute", zIndex: "-1", }}
+      /> */}
       {ClipCom()}
       {/* <ClipCom/> */}
     </div>
