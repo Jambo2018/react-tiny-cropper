@@ -3,16 +3,11 @@ import Cropper from "./Cropper";
 // import image from "./assets/test.jpeg";
 import "./App.css";
 
-type imageProps={
-  image:string,
-  canvasWidth:number,
-  canvasHeight:number
-}
 function App() {
-  const [preview, setPreview] = useState<string>("");
-  const [img, setImage] = useState<imageProps>({image:"",canvasWidth:0,canvasHeight:0});
+  const [img, setImg] = useState<string>("");
+  const [image, setImage] = useState<string>("");
   const oncrop = (e: string) => {
-    setPreview(e);
+    setImg(e);
   };
   // const [count1, setCount1] = useState(0);
   // const [count2, setCount2] = useState(0);
@@ -24,21 +19,13 @@ function App() {
   //   setCount2(count2 + 1);
   // }, [count2]);
   const onSelectImage = (e: any) => {
+    console.log(e.target.files[0])
     let reader = new FileReader();
     reader.onload = function () {
-      if (typeof this.result === "string") {
-        let image = this.result;
-        let imgEle = new Image();
-        imgEle.src = image;
-        imgEle.onload = function () {
-          const config = {
-            canvasWidth: imgEle.width,
-            canvasHeight: imgEle.height,
-            image
-          }
-          setImage(config)
-        }
-      }
+      let image = "";
+      if (typeof this.result === "string")
+        image = this.result;
+      setImage(image)
     }
     reader.readAsDataURL(e.target.files[0]);
   }
@@ -53,8 +40,8 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-      <Cropper onResult={oncrop} type="rectangle" nodesNum={10} {...img} style={{ width: "50%", height: "30vh" }} />
-      <img src={preview.toString()} />
+        <Cropper onResult={oncrop} type="rectangle" nodesNum={10} image={image} style={{width:"50%",height:"30vh"}}/>
+      <img src={img.toString()} />
     </div>
   );
 }
