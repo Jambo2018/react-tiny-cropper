@@ -3,11 +3,16 @@ import Cropper from "./Cropper";
 // import image from "./assets/test.jpeg";
 import "./App.css";
 
+type imageProps={
+  image:string,
+  canvasWidth:number,
+  canvasHeight:number
+}
 function App() {
-  const [img, setImg] = useState<string>("");
-  const [image, setImage] = useState<string>("");
+  const [preview, setPreview] = useState<string>("");
+  const [img, setImage] = useState<imageProps>();
   const oncrop = (e: string) => {
-    setImg(e);
+    setPreview(e);
   };
   // const [count1, setCount1] = useState(0);
   // const [count2, setCount2] = useState(0);
@@ -22,10 +27,19 @@ function App() {
     console.log(e.target.files[0])
     let reader = new FileReader();
     reader.onload = function () {
-      let image = "";
-      if (typeof this.result === "string")
-        image = this.result;
-      setImage(image)
+      if (typeof this.result === "string") {
+        let image = this.result;
+        let imgEle = new Image();
+        imgEle.src = image;
+        imgEle.onload = function () {
+          const config = {
+            canvasWidth: imgEle.width,
+            canvasHeight: imgEle.height,
+            image
+          }
+          setImage(config)
+        }
+      }
     }
     reader.readAsDataURL(e.target.files[0]);
   }
@@ -40,8 +54,8 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-        <Cropper onResult={oncrop} type="square" nodesNum={10} image={image} style={{width:"50vw",height:"30vh"}}/>
-      <img src={img.toString()} />
+      <Cropper onResult={oncrop} type="square" nodesNum={10} {...img} style={{ width: "50%", height: "30vh" }} />
+      <img src={preview.toString()} />
     </div>
   );
 }

@@ -10,12 +10,14 @@ import {
 interface propsType {
   src?: string;
   square?: boolean;
+  canvasWidth:number,
+  canvasHeight:number,
   onResult: (url: string) => void;
 }
 
 const Rectangle: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const src = props.src;
+  const {src,canvasWidth,canvasHeight} = props;
   const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
@@ -84,8 +86,8 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     img.setAttribute("crossOrigin", "anonymous");
     img.src = src || "";
     img.onload = function () {
-      const mW = 600 / img.width;
-      const mH = 400 / img.height;
+      const mW = canvasWidth / img.width;
+      const mH = canvasHeight / img.height;
       cropper_ctx?.drawImage(
         img,
         x / mW,
@@ -155,8 +157,8 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
   return (
     <canvas
       ref={canvasRef}
-      width={600}
-      height={400}
+      width={canvasWidth}
+      height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
