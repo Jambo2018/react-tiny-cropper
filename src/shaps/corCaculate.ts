@@ -1,6 +1,6 @@
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
-export const rec_curser = ["default", "move", "se-resize", "sw-resize", "se-resize", "ne-resize", "n-resize", "e-resize", "n-resize", "e-resize"]
-export const square_curser = ["default", "move", "default", "default", "se-resize", "default", "default", "default", "default", "default"]
+export const rec_curser=["default","move","se-resize","sw-resize","se-resize","ne-resize","n-resize","e-resize","n-resize","e-resize"]
+export const square_curser=["default","move","default","default","se-resize","default","default","default","default","default"]
 export const DW: number = 10;
 type Rectangle = {
     x: number,
@@ -9,8 +9,8 @@ type Rectangle = {
     height: number
 }
 type Cors = {
-    clientX: number,
-    clientY: number
+    offsetX: number,
+    offsetY: number
 }
 type Last = {
     x: number,
@@ -22,42 +22,42 @@ export function isInArea(n0: number, n1: number, n: number) {
 
 export function on_down(rec: Rectangle, client: Cors): number {
     const { x, y, width, height } = rec;
-    const { clientX, clientY } = client;
+    const { offsetX, offsetY } = client;
     let pos;
     if (
-        isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
+        isInArea(x + DW / 2, x + width - DW / 2, offsetX) && isInArea(y + DW / 2, y + height - DW / 2, offsetY)
     ) {
         pos = Position.in;
     } else if (
-        isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
+        isInArea(x - DW / 2, x + DW / 2, offsetX) && isInArea(y - DW / 2, y + DW / 2, offsetY)
     ) {
         pos = Position.top_left;
     } else if (
-        isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
+        isInArea(x + width - DW / 2, x + width + DW / 2, offsetX) && isInArea(y - DW / 2, y + DW / 2, offsetY)
     ) {
         pos = Position.top_right;
     } else if (
-        isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        isInArea(x + width - DW / 2, x + width + DW / 2, offsetX) && isInArea(y + height - DW / 2, y + height + DW / 2, offsetY)
     ) {
         pos = Position.bottom_right;
     } else if (
-        isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        isInArea(x - DW / 2, x + DW / 2, offsetX) && isInArea(y + height - DW / 2, y + height + DW / 2, offsetY)
     ) {
         pos = Position.bottom_left;
     } else if (
-        isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y - DW / 2, y + DW / 2, clientY)
+        isInArea(x + DW / 2, x + width - DW / 2, offsetX) && isInArea(y - DW / 2, y + DW / 2, offsetY)
     ) {
         pos = Position.top;
     } else if (
-        isInArea(x + width - DW / 2, x + width + DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
+        isInArea(x + width - DW / 2, x + width + DW / 2, offsetX) && isInArea(y + DW / 2, y + height - DW / 2, offsetY)
     ) {
         pos = Position.right;
     } else if (
-        isInArea(x + DW / 2, x + width - DW / 2, clientX) && isInArea(y + height - DW / 2, y + height + DW / 2, clientY)
+        isInArea(x + DW / 2, x + width - DW / 2, offsetX) && isInArea(y + height - DW / 2, y + height + DW / 2, offsetY)
     ) {
         pos = Position.bottom;
     } else if (
-        isInArea(x - DW / 2, x + DW / 2, clientX) && isInArea(y + DW / 2, y + height - DW / 2, clientY)
+        isInArea(x - DW / 2, x + DW / 2, offsetX) && isInArea(y + DW / 2, y + height - DW / 2, offsetY)
     ) {
         pos = Position.left;
     } else {
@@ -67,12 +67,10 @@ export function on_down(rec: Rectangle, client: Cors): number {
 }
 
 export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, square?: boolean): Rectangle {
-    // offsetX,offsetY
-    const { clientX, clientY } = client;
-    console.log(clientX, clientY)
+    const { offsetX, offsetY } = client;
     let { x, y, width, height } = rec;
-    let dx = clientX - last.x;
-    let dy = clientY - last.y;
+    let dx = offsetX - last.x;
+    let dy = offsetY - last.y;
     const bx = x + width;
     const by = y + height;
     switch (pos) {
@@ -82,8 +80,8 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             break;
         case Position.top_left:
             if (square) break;
-            x = clientX;
-            y = clientY;
+            x = offsetX;
+            y = offsetY;
             width = bx - x;
             height = by - y;
             break;
@@ -103,13 +101,13 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             break;
         case Position.bottom_left:
             if (square) break;
-            x = clientX;
+            x = offsetX;
             width = bx - x
             height += dy;
             break;
         case Position.top:
             if (square) break;
-            y = clientY;
+            y = offsetY;
             height = by - y;
             break;
         case Position.bottom:
@@ -122,7 +120,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             break;
         case Position.left:
             if (square) break;
-            x = clientX;
+            x = offsetX;
             width = bx - x
             break;
         default: break;

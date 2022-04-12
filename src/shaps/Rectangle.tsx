@@ -113,26 +113,27 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
   const onMouseDown = (e: any) => {
     // console.log("down")
     press.current = true;
-    const { clientX: x, clientY: y } = e;
-    pos.current = on_down(rec, e);
+    const { offsetX: x, offsetY: y } = e.nativeEvent;
+    pos.current = on_down(rec, e.nativeEvent);
+    console.log(pos.current)
     setCursor(pos.current);
     setLast({ x, y });
   };
   const onMouseEnter = (e: any) => {
     // console.log("enter")
-    const { clientX, clientY } = e;
+    const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = (e: any) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    // if (!press.current) {
-    //   let p = on_down(rec, e);
-    //   setCursor(p);
-    // }
-    // if (pos.current === Position.out) return;
+    if (!press.current) {
+      let p = on_down(rec, e.nativeEvent);
+      setCursor(p);
+    }
+    if (pos.current === Position.out) return;
     let { x, y, width, height } = on_move(
       rec,
-      e,
+      e.nativeEvent,
       last,
       pos.current,
       props.square
@@ -145,7 +146,7 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     if(x+width>canvas.width)x=canvas.width-width
     if(y+height>canvas.height)y=canvas.height-height
 
-    setLast({ x: e.clientX, y: e.clientY });
+    setLast({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
     setRec({ x, y, width, height });
     paint();
   };
