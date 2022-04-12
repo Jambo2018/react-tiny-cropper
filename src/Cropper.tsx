@@ -18,8 +18,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   const ClipCom = useMemo(() => {
     if (!boxRef.current) return null;
     const { clientWidth, clientHeight } = boxRef.current;
-    console.log(clientWidth,clientHeight)
-    console.log(clientWidth,clientHeight)
+    console.log( clientWidth)
     const config = { 
       canvasWidth: clientWidth, 
       canvasHeight: clientHeight,
@@ -43,7 +42,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
 
 
   return (
-    <div ref={boxRef} className="box" style={{ border: "5px solid #f40", ...props.style, backgroundImage: `url(${image})` }}>
+    <div ref={boxRef} className="box" style={{...props.style, backgroundImage: `url(${image})` }}>
       {/* <img
         src={image}
         // width={600}

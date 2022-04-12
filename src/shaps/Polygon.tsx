@@ -83,7 +83,6 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       y_max = Math.max(y_max, item.y);
       y_min = Math.min(y_min, item.y);
     });
-    console.log(x_min, y_min, x_max, y_max);
     cropper.width = x_max - x_min;
     cropper.height = y_max - y_min;
     const cropper_ctx = cropper.getContext("2d");
@@ -174,6 +173,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     press.current = false;
     pos.current = props.dots;
   };
+  console.log(canvasWidth)
 
   return (
     <canvas
