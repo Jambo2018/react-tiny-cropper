@@ -91,8 +91,8 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     img.setAttribute("crossOrigin", "anonymous");
     img.src = src || "";
     img.onload = function () {
-      const mW = 600 / img.width;
-      const mH = 400 / img.height;
+      const mW = canvasWidth / img.width;
+      const mH = canvasHeight / img.height;
       cropper_ctx?.beginPath();
       polygon.forEach((item) => {
         cropper_ctx?.lineTo(item.x - x_min, item.y - y_min);
@@ -178,8 +178,8 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
   return (
     <canvas
       ref={canvasRef}
-      width={600}
-      height={400}
+      width={canvasWidth}
+      height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}

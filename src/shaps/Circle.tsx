@@ -71,8 +71,8 @@ const Circle: React.FC<propsType> = (props: propsType) => {
       cropper_ctx?.beginPath();
       cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
       cropper_ctx?.clip();
-      const mW = 600 / img.width;
-      const mH = 400 / img.height;
+      const mW = canvasWidth / img.width;
+      const mH = canvasHeight / img.height;
       cropper_ctx?.drawImage(
         img,
         (x - radius) / mW,
@@ -164,8 +164,8 @@ const Circle: React.FC<propsType> = (props: propsType) => {
   return (
     <canvas
       ref={canvasRef}
-      width={600}
-      height={400}
+      width={canvasWidth}
+      height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}

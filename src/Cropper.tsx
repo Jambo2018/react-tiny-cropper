@@ -19,6 +19,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     if (!boxRef.current) return null;
     const { clientWidth, clientHeight } = boxRef.current;
     console.log(clientWidth,clientHeight)
+    console.log(clientWidth,clientHeight)
     const config = { 
       canvasWidth: clientWidth, 
       canvasHeight: clientHeight,
