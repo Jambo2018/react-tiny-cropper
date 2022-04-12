@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface propsType {
   src?: string;
+  canvasWidth:number,
+  canvasHeight:number,
   onResult: (url: string) => void;
 }
 
-type Cors = {
-  clientX: number;
-  clientY: number;
-};
+
 enum Position {
   out,
   in,
@@ -18,7 +17,7 @@ const circle_curser = ["default", "move", "e-resize"];
 const DW: number = 10;
 const Circle: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const src = props.src;
+  const {src,canvasWidth,canvasHeight} = props;
   const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
   // const [position, setPosition] = useState(0);
   let pos = useRef<Position>(0);
@@ -42,15 +41,15 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const { x, y, radius } = circle;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     ctx.beginPath();
     ctx.lineTo(0, 0);
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.lineTo(0, 0);
-    ctx.lineTo(0, canvas.height);
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(canvas.width, 0);
+    ctx.lineTo(0, canvasHeight);
+    ctx.lineTo(canvasWidth, canvasHeight);
+    ctx.lineTo(canvasWidth, 0);
 
     ctx.fillStyle = "rgba(0,0,0,0.5)";
     ctx.fill();
@@ -89,19 +88,19 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     };
   }
 
-  const on_down = function (c: object, e: Cors) {
+  const on_down = function (c: object, e: any) {
     const { x, y, radius } = circle;
-    const { clientX, clientY } = e;
+    const { offsetX, offsetY } = e.nativeEvent;
     if (
-      Math.pow(clientX - x, 2) + Math.pow(clientY - y, 2) <
+      Math.pow(offsetX - x, 2) + Math.pow(offsetY - y, 2) <
       Math.pow(radius - DW / 2, 2)
     ) {
       return Position.in;
     } else if (
-      clientX > x + radius - DW / 2 &&
-      clientX < x + radius + DW / 2 &&
-      clientY > y - DW / 2 &&
-      clientY < y + DW / 2
+      offsetX > x + radius - DW / 2 &&
+      offsetX < x + radius + DW / 2 &&
+      offsetY > y - DW / 2 &&
+      offsetY < y + DW / 2
     ) {
       return Position.dot;
     } else {
@@ -111,14 +110,14 @@ const Circle: React.FC<propsType> = (props: propsType) => {
   const onMouseDown = (e: any) => {
     // console.log("down")
     press.current = true;
-    const { clientX: x, clientY: y } = e;
+    const { offsetX: x, offsetY: y } = e.nativeEvent;
     pos.current = on_down(circle, e);
     setCursor(pos.current);
     setLast({ x, y });
   };
   const onMouseEnter = (e: any) => {
     // console.log("enter")
-    const { clientX, clientY } = e;
+    const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = (e: any) => {
     if (!press.current) {
@@ -130,11 +129,11 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     const canvas: HTMLCanvasElement = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const { clientX, clientY } = e;
+    const { offsetX, offsetY } = e.nativeEvent;
     if (pos.current > 0) {
       let { x, y, radius } = circle;
-      const dx = clientX - last.x;
-      const dy = clientY - last.y;
+      const dx = offsetX - last.x;
+      const dy = offsetY - last.y;
       if (pos.current === 1) {
         x += dx;
         y += dy;
@@ -148,13 +147,13 @@ const Circle: React.FC<propsType> = (props: propsType) => {
         x = radius
       if (y < radius)
         y = radius
-      if (x + radius > canvas.width)
-        x = canvas.width - radius
-      if (y + radius > canvas.height)
-        y = canvas.height - radius
+      if (x + radius > canvasWidth)
+        x = canvasWidth - radius
+      if (y + radius > canvasHeight)
+        y = canvasHeight - radius
       setCircle({ x, y, radius });
       paint();
-      setLast({ x: clientX, y: clientY });
+      setLast({ x: offsetX, y: offsetY });
     }
   };
   const onMouseUp = (e: any) => {

@@ -34,10 +34,10 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const { x, y, width, height } = rec;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     ctx.fillStyle = "rgba(0,0,0,0.5)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     ctx.clearRect(x, y, width, height);
 
     ctx.beginPath();
@@ -143,8 +143,8 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     if(height<15)height=15
     if(x<0)x=0
     if(y<0)y=0
-    if(x+width>canvas.width)x=canvas.width-width
-    if(y+height>canvas.height)y=canvas.height-height
+    if(x+width>canvasWidth)x=canvasWidth-width
+    if(y+height>canvasHeight)y=canvasHeight-height
 
     setLast({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
     setRec({ x, y, width, height });
