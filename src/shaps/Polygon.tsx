@@ -1,16 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Position,
-  DW,
-  on_down,
-  on_move,
-  rec_curser,
-  square_curser,
-} from "./corCaculate";
+import {DW} from "./corCaculate";
 interface propsType {
   src?: string;
   dots: number;
-  square?: boolean;
+  canvasWidth:number,
+  canvasHeight:number,
   onResult: (url: string) => void;
 }
 type Cors = {
@@ -19,7 +13,7 @@ type Cors = {
 };
 const Polygon: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const src = props.src;
+  const {src,canvasWidth,canvasHeight} = props;
 
   let a = [];
   for (let i = 0; i < props.dots; i++) {
@@ -49,7 +43,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const canvas: HTMLCanvasElement = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     ctx.fillStyle = "rgba(0,0,0,0.5)";
     ctx.beginPath();
@@ -59,9 +53,9 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     }
     ctx.lineTo(polygon[0].x, polygon[0].y);
     ctx.lineTo(0, 0);
-    ctx.lineTo(0, canvas.height);
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(canvas.width, 0);
+    ctx.lineTo(0, canvasHeight);
+    ctx.lineTo(canvasWidth, canvasHeight);
+    ctx.lineTo(canvasWidth, 0);
 
     ctx.fill();
 
@@ -80,9 +74,9 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
     const cropper: HTMLCanvasElement = document.createElement("canvas");
     let x_max: number = 0,
-      x_min: number = canvas.width,
+      x_min: number = canvasWidth,
       y_max: number = 0,
-      y_min: number = canvas.height;
+      y_min: number = canvasHeight;
     polygon.forEach((item) => {
       x_max = Math.max(x_max, item.x);
       x_min = Math.min(x_min, item.x);
@@ -145,19 +139,19 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
   const onMouseDown = (e: any) => {
     // console.log("down")
     press.current = true;
-    const { clientX: x, clientY: y } = e;
+    const { offsetX: x, offsetY: y } = e.nativeEvent;
     pos.current = on_down(polygon, { x, y });
     setCursor(pos.current);
     setLast({ x, y });
   };
   const onMouseEnter = (e: any) => {
     // console.log("enter")
-    const { clientX, clientY } = e;
+    const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = (e: any) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    let { clientX: x, clientY: y } = e;
+    let { offsetX: x, offsetY: y } = e.nativeEvent;
     if (!press.current) {
       let p = on_down(polygon, { x, y });
       setCursor(p);
@@ -168,11 +162,10 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       x = 0
     if (y < 0)
       y = 0
-    if (x > canvas.width)
-      x = canvas.width
-    if (y > canvas.height)
-      y = canvas.height
-console.log(x,y)
+    if (x > canvasWidth)
+      x = canvasWidth
+    if (y > canvasHeight)
+      y = canvasHeight
     polygon[pos.current] = { x, y };
     setPolygon(polygon);
     paint();
