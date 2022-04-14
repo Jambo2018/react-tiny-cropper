@@ -7,6 +7,7 @@
 - package
 - example
 - readme
+- resize cropper area
 
 # Getting Started with Create React App
 
