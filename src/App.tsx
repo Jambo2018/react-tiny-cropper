@@ -19,7 +19,7 @@ function App() {
   //   setCount2(count2 + 1);
   // }, [count2]);
   const onSelectImage = (e: any) => {
-    console.log(e.target.files[0])
+    // console.log(e.target.files[0])
     let reader = new FileReader();
     reader.onload = function () {
       let image = "";
@@ -40,7 +40,7 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-        <Cropper onResult={oncrop} type="polygon" nodesNum={10} image={image} style={{width:"80%",height:"80vh"}}/>
+        <Cropper onResult={oncrop} type="circle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/>
       <img src={img.toString()} />
     </div>
   );
