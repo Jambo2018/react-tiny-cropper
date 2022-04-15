@@ -1,9 +1,9 @@
 # TodoList
 - backgroundimg/grid/mask
-- limit size
+- ~~limit size~~
 - window.addlistrner mouseEvent
 - priview & crop callback?
-- customize box size
+- ~~customize box size~~
 - package
 - example
 - readme
