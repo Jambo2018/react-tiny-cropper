@@ -37,7 +37,6 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { src, canvasWidth, canvasHeight, dots } = props;
   const [polygon, setPolygon] = useState<Cors[]>(getInitital(canvasWidth, canvasHeight, dots));
-  const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<number>(props.dots);
   const press = useRef<boolean>(false);
 
@@ -138,7 +137,6 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const { offsetX: x, offsetY: y } = e.nativeEvent;
     pos.current = on_down(polygon, { x, y });
     setCursor(pos.current);
-    setLast({ x, y });
   };
   const onMouseEnter = (e: any) => {
     // console.log("enter")
