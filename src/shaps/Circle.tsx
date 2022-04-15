@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import {getCropPosition} from "./corCaculate"
+import { getCropPosition } from "./corCaculate"
 interface propsType {
   src?: string;
-  canvasWidth:number,
-  canvasHeight:number,
+  canvasWidth: number,
+  canvasHeight: number,
   onResult: (url: string) => void;
 }
-
+type CircleEle = {
+  x: number,
+  y: number,
+  radius: number
+}
 
 enum Position {
   out,
@@ -15,10 +19,22 @@ enum Position {
 }
 const circle_curser = ["default", "move", "e-resize"];
 const DW: number = 10;
+
+
+
+function getInitital(cW: number, cH: number): CircleEle {
+  const radius = Math.min(cW * 0.4, cH * 0.4, 200) / 2;
+  const x = cW / 2;
+  const y = cH / 2;
+  return { x, y, radius };
+}
+
+
 const Circle: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const {src,canvasWidth,canvasHeight} = props;
-  const [circle, setCircle] = useState({ x: 100, y: 100, radius: 50 });
+  const { src, canvasWidth, canvasHeight } = props;
+  const { x, y, radius } = getInitital(canvasWidth, canvasHeight);
+  const [circle, setCircle] = useState({ x, y, radius });
   // const [position, setPosition] = useState(0);
   let pos = useRef<Position>(0);
   const [last, setLast] = useState({ x: 0, y: 0 });

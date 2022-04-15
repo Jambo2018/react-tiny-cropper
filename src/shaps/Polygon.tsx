@@ -1,34 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
-import {DW,getCropPosition} from "./corCaculate";
+import { DW, getCropPosition } from "./corCaculate";
 interface propsType {
   src?: string;
   dots: number;
-  canvasWidth:number,
-  canvasHeight:number,
+  canvasWidth: number,
+  canvasHeight: number,
   onResult: (url: string) => void;
 }
 type Cors = {
   x: number;
   y: number;
 };
-const Polygon: React.FC<propsType> = (props: propsType) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const {src,canvasWidth,canvasHeight} = props;
+
+
+function getInitital(cW: number, cH: number, dots: number): Cors[] {
+  const radius = Math.min(cW * 0.5, cH * 0.5, 200) / 2;
+  const x = cW / 2;
+  const y = cH / 2;
 
   let a = [];
-  for (let i = 0; i < props.dots; i++) {
+  for (let i = 0; i < dots; i++) {
     let angel;
-    if (props.dots % 2 === 1) {
-      angel = (i / props.dots) * 2 * Math.PI - Math.PI / 2;
+    if (dots % 2 === 1) {
+      angel = (i / dots) * 2 * Math.PI - Math.PI / 2;
     } else {
-      angel = ((i + 0.5) / props.dots) * 2 * Math.PI;
+      angel = ((i + 0.5) / dots) * 2 * Math.PI;
     }
     let cos = Math.cos(angel).toFixed(3);
     let sin = Math.sin(angel).toFixed(3);
-    a.push({ x: 150 + 100 * parseFloat(cos), y: 150 + 100 * parseFloat(sin) });
+    a.push({ x: x + radius * parseFloat(cos), y: y + radius * parseFloat(sin) });
   }
+  return a;
+}
 
-  const [polygon, setPolygon] = useState<Cors[]>(a);
+const Polygon: React.FC<propsType> = (props: propsType) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { src, canvasWidth, canvasHeight, dots } = props;
+  const [polygon, setPolygon] = useState<Cors[]>(getInitital(canvasWidth, canvasHeight, dots));
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<number>(props.dots);
   const press = useRef<boolean>(false);

@@ -17,9 +17,13 @@ interface propsType {
   onResult: (url: string) => void;
 }
 
-function getInitital(cW: number, cH: number): Rectangle {
-  const width = Math.min(200, cW * 0.4);
-  const height = Math.min(200, cH * 0.4);
+function getInitital(cW: number, cH: number,square:boolean): Rectangle {
+  let width = Math.min(200, cW * 0.4);
+  let height = Math.min(200, cH * 0.4);
+  if(square){
+    width=Math.min(width,height);
+    height=width;
+  }
   const x = (cW - width) / 2;
   const y = (cH - height) / 2;
   console.log(x,y,width,height)
@@ -27,9 +31,9 @@ function getInitital(cW: number, cH: number): Rectangle {
 }
 const RecCom: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { src, canvasWidth, canvasHeight } = props;
+  const { src, canvasWidth, canvasHeight ,square=false} = props;
 
-  const [rec, setRec] = useState(getInitital(canvasWidth,canvasHeight));
+  const [rec, setRec] = useState(getInitital(canvasWidth,canvasHeight,square));
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
   const press = useRef<boolean>(false);
@@ -77,7 +81,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     ctx.stroke();
 
     ctx.fillStyle = "#F40";
-    if (!props.square) {
+    if (!square) {
       ctx.fillRect(x - DW / 2, y - DW / 2, DW, DW);
       ctx.fillRect(x + width - DW / 2, y - DW / 2, DW, DW);
       ctx.fillRect(x - DW / 2, y + height - DW / 2, DW, DW);
@@ -106,7 +110,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
   const setCursor = (p: Position) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    if (props.square) canvas.style.cursor = square_curser[p];
+    if (square) canvas.style.cursor = square_curser[p];
     else canvas.style.cursor = rec_curser[p];
   };
 
@@ -136,7 +140,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
       e.nativeEvent,
       last,
       pos.current,
-      props.square
+      square
     );
 
     if (width < 15) width = 15
