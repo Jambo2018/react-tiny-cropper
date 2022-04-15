@@ -6,7 +6,8 @@ import {
   on_move,
   rec_curser,
   square_curser,
-  getCropPosition
+  getCropPosition,
+  Rectangle
 } from "./corCaculate";
 interface propsType {
   src?: string;
@@ -16,10 +17,19 @@ interface propsType {
   onResult: (url: string) => void;
 }
 
-const Rectangle: React.FC<propsType> = (props: propsType) => {
+function getInitital(cW: number, cH: number): Rectangle {
+  const width = Math.min(200, cW * 0.4);
+  const height = Math.min(200, cH * 0.4);
+  const x = (cW - width) / 2;
+  const y = (cH - height) / 2;
+  console.log(x,y,width,height)
+  return { x, y, width, height };
+}
+const RecCom: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { src, canvasWidth, canvasHeight } = props;
-  const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
+
+  const [rec, setRec] = useState(getInitital(canvasWidth,canvasHeight));
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
   const press = useRef<boolean>(false);
@@ -158,4 +168,4 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
   );
 };
 
-export default Rectangle;
+export default RecCom;
