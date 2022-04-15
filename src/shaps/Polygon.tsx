@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {DW} from "./corCaculate";
+import {DW,getCropPosition} from "./corCaculate";
 interface propsType {
   src?: string;
   dots: number;
@@ -90,25 +90,14 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     img.setAttribute("crossOrigin", "anonymous");
     img.src = src || "";
     img.onload = function () {
-      const mW = canvasWidth / img.width;
-      const mH = canvasHeight / img.height;
       cropper_ctx?.beginPath();
       polygon.forEach((item) => {
         cropper_ctx?.lineTo(item.x - x_min, item.y - y_min);
       });
       cropper_ctx?.lineTo(polygon[0].x - x_min, polygon[0].y - y_min);
       cropper_ctx?.clip();
-      cropper_ctx?.drawImage(
-        img,
-        x_min / mW,
-        y_min / mH,
-        cropper.width / mW,
-        cropper.height / mH,
-        0,
-        0,
-        cropper.width,
-        cropper.height
-      );
+      const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x_min, y_min, cropper.width, cropper.height)
+      cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, cropper.width, cropper.height);
       props.onResult(cropper?.toDataURL());
     };
   }

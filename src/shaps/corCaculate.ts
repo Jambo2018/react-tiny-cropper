@@ -1,6 +1,6 @@
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
-export const rec_curser=["default","move","se-resize","sw-resize","se-resize","ne-resize","n-resize","e-resize","n-resize","e-resize"]
-export const square_curser=["default","move","default","default","se-resize","default","default","default","default","default"]
+export const rec_curser = ["default", "move", "se-resize", "sw-resize", "se-resize", "ne-resize", "n-resize", "e-resize", "n-resize", "e-resize"]
+export const square_curser = ["default", "move", "default", "default", "se-resize", "default", "default", "default", "default", "default"]
 export const DW: number = 10;
 type Rectangle = {
     x: number,
@@ -129,3 +129,26 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
     return { x, y, width, height };
 }
 
+
+/**
+ * 
+ * @param cW canvas.width
+ * @param cH canvas.height
+ * @param iW img.width
+ * @param iH img.height
+ * @param x crop.x
+ * @param y crop.y
+ * @param width crop.width
+ * @param height crop.height
+ */
+export function getCropPosition(cW: number, cH: number, iW: number, iH: number,x:number,y:number,width:number,height:number): number[] {
+    let rate;
+    if (cW / cH > iW / iH) {
+        rate = iH / cH;
+        return [(x-(cW - iW/rate)/2)*rate,y*rate,width*rate,height*rate]
+    }else{
+        rate = iW / cW;
+        return [x*rate,(y-(cH-iH/rate)/2)*rate,width*rate,height*rate]
+    }
+
+}

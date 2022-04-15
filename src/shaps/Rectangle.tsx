@@ -6,18 +6,19 @@ import {
   on_move,
   rec_curser,
   square_curser,
+  getCropPosition
 } from "./corCaculate";
 interface propsType {
   src?: string;
   square?: boolean;
-  canvasWidth:number,
-  canvasHeight:number,
+  canvasWidth: number,
+  canvasHeight: number,
   onResult: (url: string) => void;
 }
 
 const Rectangle: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const {src,canvasWidth,canvasHeight} = props;
+  const { src, canvasWidth, canvasHeight } = props;
   const [rec, setRec] = useState({ x: 100, y: 100, width: 100, height: 100 });
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
@@ -86,19 +87,8 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
     img.setAttribute("crossOrigin", "anonymous");
     img.src = src || "";
     img.onload = function () {
-      const mW = canvasWidth / img.width;
-      const mH = canvasHeight / img.height;
-      cropper_ctx?.drawImage(
-        img,
-        x / mW,
-        y / mH,
-        width / mW,
-        height / mH,
-        0,
-        0,
-        width,
-        height
-      );
+      const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x, y, width, height)
+      cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, width, height);
       props.onResult(cropper?.toDataURL());
     };
   }
@@ -138,13 +128,13 @@ const Rectangle: React.FC<propsType> = (props: propsType) => {
       pos.current,
       props.square
     );
-    
-    if(width<15)width=15
-    if(height<15)height=15
-    if(x<0)x=0
-    if(y<0)y=0
-    if(x+width>canvasWidth)x=canvasWidth-width
-    if(y+height>canvasHeight)y=canvasHeight-height
+
+    if (width < 15) width = 15
+    if (height < 15) height = 15
+    if (x < 0) x = 0
+    if (y < 0) y = 0
+    if (x + width > canvasWidth) x = canvasWidth - width
+    if (y + height > canvasHeight) y = canvasHeight - height
 
     setLast({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
     setRec({ x, y, width, height });

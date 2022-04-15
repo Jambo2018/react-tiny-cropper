@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import {getCropPosition} from "./corCaculate"
 interface propsType {
   src?: string;
   canvasWidth:number,
@@ -71,19 +71,8 @@ const Circle: React.FC<propsType> = (props: propsType) => {
       cropper_ctx?.beginPath();
       cropper_ctx?.arc(radius, radius, radius, 0, 2 * Math.PI);
       cropper_ctx?.clip();
-      const mW = canvasWidth / img.width;
-      const mH = canvasHeight / img.height;
-      cropper_ctx?.drawImage(
-        img,
-        (x - radius) / mW,
-        (y - radius) / mH,
-        (radius * 2) / mW,
-        (radius * 2) / mH,
-        0,
-        0,
-        radius * 2,
-        radius * 2
-      );
+      const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x - radius, y - radius, radius * 2, radius * 2)
+      cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, radius * 2, radius * 2);
       props.onResult(cropper?.toDataURL());
     };
   }
