@@ -40,10 +40,10 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
-        {/* <Cropper onResult={oncrop} type="rectangle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}
+        <Cropper onResult={oncrop} type="rectangle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/>
         {/* <Cropper onResult={oncrop} type="square" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}
-        <Cropper onResult={oncrop} type="circle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/>
-        <Cropper onResult={oncrop} type="polygon" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/>
+        {/* <Cropper onResult={oncrop} type="circle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}
+        {/* <Cropper onResult={oncrop} type="polygon" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}
 <img src={img.toString()} />
     </div>
   );
