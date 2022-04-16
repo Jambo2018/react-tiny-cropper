@@ -8,6 +8,7 @@
 - example
 - readme
 - resize cropper area
+- resolution ratio
 
 # Getting Started with Create React App
 
