@@ -9,3 +9,4 @@
 - readme
 - resize cropper area
 - resolution ratio
+- paint circle based on rectangle
