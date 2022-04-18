@@ -15,6 +15,8 @@ interface propsType {
 const Cropper: React.FC<propsType> = (props: propsType) => {
   const { type = "rectangle", image = "" } = props;
   const boxRef = useRef<HTMLDivElement>(null);
+
+
   const ClipCom = useMemo(() => {
     if (!boxRef.current) return null;
     const { clientWidth, clientHeight } = boxRef.current;

@@ -45,6 +45,14 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     paint();
   }, []);
 
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+    }
+  }, [])
+
+
   function paint() {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
@@ -105,7 +113,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       cropper_ctx?.clip();
       const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x_min, y_min, cropper.width, cropper.height)
       cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, cropper.width, cropper.height);
-      props.onResult(cropper?.toDataURL("image/jpeg",1));
+      props.onResult(cropper?.toDataURL("image/png", 1));
     };
   }
 
@@ -143,9 +151,14 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = (e: any) => {
+    console.log(e.clientX,e.clientY)
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    let { offsetX: x, offsetY: y } = e.nativeEvent;
+    // let { offsetX: x, offsetY: y } = e.nativeEvent;
+    // console.log(x,y)
+    const rect:DOMRectList=canvas.getClientRects();
+    let x=e.clientX-rect[0].x;
+    let y=e.clientY-rect[0].y;
     if (!press.current) {
       let p = on_down(polygon, { x, y });
       setCursor(p);
