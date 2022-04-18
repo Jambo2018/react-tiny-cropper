@@ -103,7 +103,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     img.onload = function () {
       const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x, y, width, height)
       cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, width, height);
-      props.onResult(cropper?.toDataURL());
+      props.onResult(cropper?.toDataURL("image/jpeg",1));
     };
   }
 

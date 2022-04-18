@@ -105,7 +105,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       cropper_ctx?.clip();
       const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x_min, y_min, cropper.width, cropper.height)
       cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, cropper.width, cropper.height);
-      props.onResult(cropper?.toDataURL());
+      props.onResult(cropper?.toDataURL("image/jpeg",1));
     };
   }
 
