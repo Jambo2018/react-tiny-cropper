@@ -47,8 +47,10 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
     }
   }, [])
 
@@ -191,7 +193,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       // onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
+      // onMouseUp={onMouseUp}
     />
   );
 };
