@@ -89,7 +89,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
       cropper_ctx?.clip();
       const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x - radius, y - radius, radius * 2, radius * 2)
       cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, radius * 2, radius * 2);
-      props.onResult(cropper?.toDataURL("image/jpeg",1));
+      props.onResult(cropper?.toDataURL("image/png",1));
     };
   }
 
