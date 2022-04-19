@@ -190,7 +190,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
-      onMouseMove={onMouseMove}
+      // onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     />
   );

@@ -17,23 +17,23 @@ interface propsType {
   onResult: (url: string) => void;
 }
 
-function getInitital(cW: number, cH: number,square:boolean): Rectangle {
+function getInitital(cW: number, cH: number, square: boolean): Rectangle {
   let width = Math.min(200, cW * 0.4);
   let height = Math.min(200, cH * 0.4);
-  if(square){
-    width=Math.min(width,height);
-    height=width;
+  if (square) {
+    width = Math.min(width, height);
+    height = width;
   }
   const x = (cW - width) / 2;
   const y = (cH - height) / 2;
-  console.log(x,y,width,height)
+  console.log(x, y, width, height)
   return { x, y, width, height };
 }
 const RecCom: React.FC<propsType> = (props: propsType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { src, canvasWidth, canvasHeight ,square=false} = props;
+  const { src, canvasWidth, canvasHeight, square = false } = props;
 
-  const [rec, setRec] = useState(getInitital(canvasWidth,canvasHeight,square));
+  const [rec, setRec] = useState(getInitital(canvasWidth, canvasHeight, square));
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
   const press = useRef<boolean>(false);
@@ -41,7 +41,12 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
   // init canvas and paint the background
   useEffect(() => {
     paint();
+    window.addEventListener("mousemove", onMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+    }
   }, []);
+
 
   function paint() {
     if (!canvasRef.current) return;
@@ -103,7 +108,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     img.onload = function () {
       const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x, y, width, height)
       cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, width, height);
-      props.onResult(cropper?.toDataURL("image/png",1));
+      props.onResult(cropper?.toDataURL("image/png", 1));
     };
   }
 
@@ -130,14 +135,24 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
   const onMouseMove = (e: any) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
+
+    console.log(e)
+
+    // let { offsetX: x, offsetY: y } = e.nativeEvent;
+    // console.log(x,y)
+    const rect: DOMRectList = canvas.getClientRects();
+    let offsetX = e.clientX - rect[0].x;
+    let offsetY = e.clientY - rect[0].y;
+
+
     if (!press.current) {
-      let p = on_down(rec, e.nativeEvent);
+      let p = on_down(rec, { offsetX, offsetY });
       setCursor(p);
     }
     if (pos.current === Position.out) return;
     let { x, y, width, height } = on_move(
       rec,
-      e.nativeEvent,
+      { offsetX, offsetY },
       last,
       pos.current,
       square
@@ -166,7 +181,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
       height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
-      onMouseMove={onMouseMove}
+      // onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     />
   );
