@@ -1,5 +1,5 @@
 # TodoList
-- backgroundimg/grid/mask
+- ~~backgroundimg/grid/mask~~
 - ~~limit size~~
 - window.addlistrner mouseEvent
 - priview & crop callback?
@@ -8,5 +8,5 @@
 - example
 - readme
 - resize cropper area
-- resolution ratio
+- ~~resolution ratio~~
 - paint circle based on rectangle
