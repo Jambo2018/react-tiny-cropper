@@ -66,8 +66,8 @@ export function on_down(rec: Rectangle, client: Cors): number {
     return pos;
 }
 
-export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, square?: boolean): Rectangle {
-//    console.log(rec,client,last,pos)
+export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, canvasWidth: number, canvasHeight: number, square?: boolean): Rectangle {
+    //    console.log(rec,client,last,pos)
     const { offsetX, offsetY } = client;
     let { x, y, width, height } = rec;
     let dx = offsetX - last.x;
@@ -81,16 +81,35 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             break;
         case Position.top_left:
             if (square) break;
-            x = offsetX;
-            y = offsetY;
+            x = offsetX < 0 ? 0 : offsetX;
+            y = offsetY < 0 ? 0 : offsetY;
             width = bx - x;
             height = by - y;
+            if(width<30){
+                width=30;
+                x=bx-width;
+            }
+            if(height<30){
+                height=30;
+                y=by-height;
+            }
             break;
         case Position.top_right:
             if (square) break;
             height -= dy;
+            if(height<30){
+                height=30;
+                y=by-height;
+            }
             y = by - height;
+            if (y < 0) {
+                y = 0;
+                height = by - y;
+            }
             width += dx;
+            if (x + width > canvasWidth) {
+                width = canvasWidth - x
+            }
             break;
         case Position.bottom_right:
             if (square) {
@@ -99,34 +118,81 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             width += dx;
             height += dy
+            if(width<30){
+                width=30;
+            }
+            if(height<30){
+                height=30;
+            }
+            if (x + width > canvasWidth) {
+                width = canvasWidth - x
+            }
+            if (y + height > canvasHeight) {
+                height = canvasHeight - y
+            }
             break;
         case Position.bottom_left:
             if (square) break;
-            x = offsetX;
+            x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
+            if(width<30){
+                width=30;
+                x=bx-width;
+            }
+        
             height += dy;
+            if(height<30){
+                height=30;
+                y=by-height;
+            }
+            if (y + height > canvasHeight) {
+                height = canvasHeight - y
+            }
             break;
         case Position.top:
             if (square) break;
-            y = offsetY;
+            y = offsetY < 0 ? 0 : offsetY;
             height = by - y;
+            if(height<30){
+                height=30;
+                y=by-height;
+            }
             break;
         case Position.bottom:
             if (square) break;
             height += dy;
+            if(height<30){
+                height=30;
+            }
+            if (y + height > canvasHeight) {
+                height = canvasHeight - y
+            }
             break;
         case Position.right:
             if (square) break;
             width += dx
+            if(width<30){
+                width=30;
+            }
+            if (x + width > canvasWidth) {
+                width = canvasWidth - x
+            }
             break;
         case Position.left:
             if (square) break;
-            x = offsetX;
+            x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
+            if(width<30){
+                width=30;
+                x=bx-width;
+            }
             break;
         default: break;
     }
-
+    if (x < 0) x = 0
+    if (y < 0) y = 0
+    if (x + width > canvasWidth) x = canvasWidth - width
+    if (y + height > canvasHeight) y = canvasHeight - height
     return { x, y, width, height };
 }
 
@@ -142,14 +208,14 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
  * @param width crop.width
  * @param height crop.height
  */
-export function getCropPosition(cW: number, cH: number, iW: number, iH: number,x:number,y:number,width:number,height:number): number[] {
+export function getCropPosition(cW: number, cH: number, iW: number, iH: number, x: number, y: number, width: number, height: number): number[] {
     let rate;
     if (cW / cH > iW / iH) {
         rate = iH / cH;
-        return [(x-(cW - iW/rate)/2)*rate,y*rate,width*rate,height*rate]
-    }else{
+        return [(x - (cW - iW / rate) / 2) * rate, y * rate, width * rate, height * rate]
+    } else {
         rate = iW / cW;
-        return [x*rate,(y-(cH-iH/rate)/2)*rate,width*rate,height*rate]
+        return [x * rate, (y - (cH - iH / rate) / 2) * rate, width * rate, height * rate]
     }
 
 }

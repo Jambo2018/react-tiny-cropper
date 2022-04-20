@@ -147,15 +147,11 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
       { offsetX, offsetY },
       last,
       pos.current,
+      canvasWidth,
+      canvasHeight,
       square
     );
 
-    if (width < 15) width = 15
-    if (height < 15) height = 15
-    if (x < 0) x = 0
-    if (y < 0) y = 0
-    if (x + width > canvasWidth) x = canvasWidth - width
-    if (y + height > canvasHeight) y = canvasHeight - height
 
     setLast({ x: offsetX, y: offsetY });
     setRec({ x, y, width, height });
