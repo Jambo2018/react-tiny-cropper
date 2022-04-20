@@ -67,6 +67,7 @@ export function on_down(rec: Rectangle, client: Cors): number {
 }
 
 export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, square?: boolean): Rectangle {
+//    console.log(rec,client,last,pos)
     const { offsetX, offsetY } = client;
     let { x, y, width, height } = rec;
     let dx = offsetX - last.x;

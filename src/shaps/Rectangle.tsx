@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Position,
   DW,
@@ -26,7 +26,7 @@ function getInitital(cW: number, cH: number, square: boolean): Rectangle {
   }
   const x = (cW - width) / 2;
   const y = (cH - height) / 2;
-  console.log(x, y, width, height)
+  // console.log("###########",x,y,width,height)
   return { x, y, width, height };
 }
 const RecCom: React.FC<propsType> = (props: propsType) => {
@@ -37,15 +37,6 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
   const [last, setLast] = useState({ x: 0, y: 0 });
   const pos = useRef<Position>(0);
   const press = useRef<boolean>(false);
-
-  // init canvas and paint the background
-  useEffect(() => {
-    paint();
-    window.addEventListener("mousemove", onMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-    }
-  }, []);
 
 
   function paint() {
@@ -124,19 +115,19 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     press.current = true;
     const { offsetX: x, offsetY: y } = e.nativeEvent;
     pos.current = on_down(rec, e.nativeEvent);
-    console.log(pos.current)
     setCursor(pos.current);
     setLast({ x, y });
   };
-  const onMouseEnter = (e: any) => {
+
+  const onMouseEnter =(e: any) => {
     // console.log("enter")
     const { offsetX, offsetY } = e.nativeEvent;
   };
-  const onMouseMove = (e: any) => {
+  const onMouseMove = useCallback( (e: any) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
 
-    console.log(e)
+    // console.log(e.clientX,e.clientY)
 
     // let { offsetX: x, offsetY: y } = e.nativeEvent;
     // console.log(x,y)
@@ -146,6 +137,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
 
 
     if (!press.current) {
+      // console.log(rec)
       let p = on_down(rec, { offsetX, offsetY });
       setCursor(p);
     }
@@ -165,14 +157,27 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     if (x + width > canvasWidth) x = canvasWidth - width
     if (y + height > canvasHeight) y = canvasHeight - height
 
-    setLast({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
+    setLast({ x: offsetX, y: offsetY });
     setRec({ x, y, width, height });
     paint();
-  };
-  const onMouseUp = (e: any) => {
+  },[last,rec]);
+  const onMouseUp =useCallback( (_e: any) => {
     press.current = false;
     pos.current = 0;
-  };
+  },[]);
+  useEffect(() => {
+    paint();
+  }, []);
+  // init canvas and paint the background
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    }
+  }, [onMouseMove, onMouseUp]);
+
 
   return (
     <canvas
@@ -181,8 +186,8 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
       height={canvasHeight}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
-      // onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
+    // onMouseMove={onMouseMove}
+    // onMouseUp={onMouseUp}
     />
   );
 };
