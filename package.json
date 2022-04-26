@@ -1,7 +1,8 @@
 {
   "name": "react-polygon-cropper",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
+  "main":"./dist/index.js",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -24,7 +25,7 @@
     "webpack-dev-server": "^4.8.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --hot",
-    "build": "webpack"
+    "start": "webpack-dev-server --config webpack.dev.js --open --hot",
+    "build": "webpack --config webpack.build.js"
   }
 }
