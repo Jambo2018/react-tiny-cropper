@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
-import Cropper from "./Cropper";
-// import image from "./assets/test.jpeg";
-import "./App.css";
+import React,{ useState, useCallback } from "react";
+import ReactDOM from "react-dom";
+import Cropper from "../src/index";
+import "./index.css";
 
 function App() {
   const [img, setImg] = useState<string>("");
@@ -9,15 +9,7 @@ function App() {
   const oncrop = (e: string) => {
     setImg(e);
   };
-  // const [count1, setCount1] = useState(0);
-  // const [count2, setCount2] = useState(0);
-  // const [count3, setCount3] = useState(0);
 
-  // const handleClickButton1 = () => {setCount1(count1 + 1)};
-
-  // const handleClickButton2 = useCallback(() => {
-  //   setCount2(count2 + 1);
-  // }, [count2]);
   const onSelectImage = (e: any) => {
     // console.log(e.target.files[0])
     let reader = new FileReader();
@@ -48,5 +40,9 @@ function App() {
     </div>
   );
 }
-
-export default App;
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

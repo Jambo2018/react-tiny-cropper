@@ -1,17 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { useEffect, useMemo, useRef } from "react";
+import Circle from "./shaps/Circle";
+import Rectangle from "./shaps/Rectangle";
+import Polygon from "./shaps/Polygon";
+import "./index.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
+interface propsType {
+  type: Shap,
+  nodesNum?: number,
+  image: string,
+  style: object,
+  onResult: (url: string) => void
+}
+const Cropper: React.FC<propsType> = (props: propsType) => {
+  const { type = "rectangle", image = "" } = props;
+  const boxRef = useRef<HTMLDivElement>(null);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+  const ClipCom = useMemo(() => {
+    if (!boxRef.current) return null;
+    const { clientWidth, clientHeight } = boxRef.current;
+    console.log( clientWidth)
+    const config = { 
+      canvasWidth: clientWidth, 
+      canvasHeight: clientHeight,
+      src:image
+    }
+    
+    switch (type) {
+      case "rectangle":
+        return <Rectangle onResult={props.onResult} {...config} />
+      case "square":
+        return <Rectangle onResult={props.onResult} {...config}  square />
+      case "circle":
+        return <Circle onResult={props.onResult} {...config}  />
+      case "polygon":
+        return <Polygon onResult={props.onResult} dots={props.nodesNum || 4} {...config}  />
+      default:
+        throw new Error("wrong type,the type could only be circle,square,rectangle or polygon");
+        return;
+    }
+  }, [type, image])
+
+
+  return (
+    <div ref={boxRef} className="box" style={{...props.style, backgroundImage: `url(${image})` }}>
+      {/* <img
+        src={image}
+        // width={600}
+        // height={400}
+        style={{ position: "absolute", zIndex: "-1", }}
+      /> */}
+      {ClipCom}
+      {/* <ClipCom/> */}
+    </div>
+  );
+};
+
+export default Cropper;
