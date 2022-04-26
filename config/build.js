@@ -1,13 +1,12 @@
 // const path = require("path");
-const HWP = require("html-webpack-plugin")
 
 module.exports = {
-    entry: __dirname + "/example/index.tsx",
+    entry:"/example/index.tsx",
     output: {
-        path: __dirname + "/dist",
+        path:"/dist",
         filename: "index.js"
     },
-    mode: "development",
+    mode: "production",
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.json']
     },
@@ -29,10 +28,5 @@ module.exports = {
                 exclude: /node_modules/
             }
         ]
-    },
-    plugins: [
-        new HWP({
-            template: __dirname + "/example/index.html"
-        }),
-    ]
+    }
 }
