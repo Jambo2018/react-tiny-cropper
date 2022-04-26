@@ -1,8 +1,28 @@
 {
-  "name": "react-polygon-cropper",
+  "name": "react-tiny-cropper",
   "version": "0.0.1",
-  "private": true,
+  "description": "A React component that supports cropping image with multiple shapes",
   "main":"./dist/index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./config/demo --open --hot",
+    "build": "webpack --config ./config/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jambo2018/react-polygon-cropper.git"
+  },
+  "keywords": [
+    "react-cropper",
+    "eay-crop",
+    "tiny-crop",
+    "react-tiny-cropper"
+  ],
+  "author": "Jambo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jambo2018/react-polygon-cropper/issues"
+  },
+  "homepage": "https://github.com/Jambo2018/react-polygon-cropper#readme",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -23,9 +43,5 @@
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --config ./config/demo --open --hot",
-    "build": "webpack --config ./config/build"
   }
 }
