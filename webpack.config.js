@@ -1,33 +1,34 @@
 
 const path = require('path');
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    index:'./example/index.tsx'
+    index: './src/index.tsx'
   },
   output: {
-    path: path.resolve(__dirname, 'example'),
-    filename: 'example.js',
-    publicPath: '/dist/'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'boundle.js',
   },
   resolve: {
-    extensions: ['.js', '.ts','tsx', '.json'],
+    extensions: ['.js', '.ts', '.tsx', '.json'],
     alias: {
       src: path.resolve(__dirname, 'src/'),
     },
   },
+  mode: "development",
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         use: [
-          {
-            loader: 'tslint-loader',
-            options: {
-              configFile: path.resolve(__dirname, './tslint.json'),
-            },
-          },
+          // {
+          //   loader: 'tslint-loader',
+          //   options: {
+          //     configFile: path.resolve(__dirname, './tslint.json'),
+          //   },
+          // },
           {
             loader: 'ts-loader',
             options: {
@@ -43,7 +44,7 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /\.(css)$/i,
+        test: /\.css$/i,
         use: [
           // Creates `style` nodes from JS strings
           "style-loader",
@@ -54,13 +55,8 @@ module.exports = {
     ]
   },
   plugins: [
-    // new MiniCssExtractPlugin({
-    //   filename: 'image-gallery.css',
-    // }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
   ],
-  devServer: {
-    historyApiFallback: {
-      rewrites: [{ from: /\//, to: '/example/index.html' }],
-    },
-  },
 };
