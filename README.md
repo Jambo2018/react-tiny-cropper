@@ -4,8 +4,8 @@
 - ~~window.addlistrner mouseEvent~~
 - priview & crop callback?
 - ~~customize box size~~
-- package
-- example
+- ~~package~~
+- ~~example~~
 - readme
 - resize cropper area
 - ~~resolution ratio~~
