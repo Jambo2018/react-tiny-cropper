@@ -1,15 +1,13 @@
 
 const path = require('path');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    index: './src/index.tsx'
+    index: './src/Cropper.tsx'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'boundle.js',
+    filename: 'index.js',
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
@@ -17,7 +15,7 @@ module.exports = {
       src: path.resolve(__dirname, 'src/'),
     },
   },
-  mode: "development",
+  mode: "production",
   module: {
     rules: [
       {
@@ -54,9 +52,4 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    }),
-  ],
 };
