@@ -1,9 +1,9 @@
 import React,{ useState, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Cropper from "../src/index";
-import "./index.css";
 
 function App() {
+  console.log(Cropper)
   const [img, setImg] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const oncrop = (e: string) => {
@@ -23,7 +23,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div>
       <input type="file" onChange={onSelectImage} />
       {/* <div>
         <a onClick={handleClickButton1}>Button1{count1}</a>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import React,{ useMemo, useRef } from "react";
 import Circle from "./shaps/Circle";
 import Rectangle from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
@@ -25,7 +25,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
       canvasWidth: clientWidth, 
       canvasHeight: clientHeight,
       src:image
-    }
+    }   
     
     switch (type) {
       case "rectangle":
