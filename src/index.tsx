@@ -20,7 +20,6 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
   const ClipCom = useMemo(() => {
     if (!boxRef.current) return null;
     const { clientWidth, clientHeight } = boxRef.current;
-    console.log( clientWidth)
     const config = { 
       canvasWidth: clientWidth, 
       canvasHeight: clientHeight,
@@ -56,5 +55,8 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     </div>
   );
 };
+
+
+
 
 export default Cropper;

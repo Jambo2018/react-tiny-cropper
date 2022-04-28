@@ -1,17 +1,17 @@
-// const path = require("path");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     output: {
-        path:path.resolve(__dirname,"../dist"),
-        filename: "index.js"
+        path: path.resolve(__dirname, "../dist"),
+        filename: "index.js",
+        libraryTarget: 'commonjs',
     },
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.json']
     },
-    devtool: 'source-map',// 打包出的js文件是否生成map文件（方便浏览器调试）
-    mode:"production",
+    devtool: 'source-map', // 打包出的js文件是否生成map文件（方便浏览器调试）
+    mode: "production",
     module: {
         rules: [
             {
@@ -19,7 +19,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env'],//最新JS语法后向兼容
+                        presets: ['@babel/preset-env'], // 最新JS语法后向兼容
                         plugins: ['@babel/plugin-transform-react-jsx'],//JSX编译
                     },
                 },
@@ -38,7 +38,7 @@ module.exports = {
                 use: ["style-loader", "css-loader"],
             }
         ]
-    },  
+    },
     // 依赖宿主环境
     externals: {
         "react": {
@@ -54,5 +54,7 @@ module.exports = {
             root: 'ReactDOM',
         },
     },
-    plugins:[new CleanWebpackPlugin()]
+    plugins: [
+        new CleanWebpackPlugin()
+    ]
 }

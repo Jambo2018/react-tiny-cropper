@@ -1,4 +1,4 @@
-import React,{ useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Cropper from "../src/index";
 
@@ -32,6 +32,7 @@ function App() {
           Button3{count3}
         </a>
     </div> */}
+      {/* <Cropper /> */}
       <Cropper onResult={oncrop} type="rectangle" nodesNum={10} image={image} style={{ width: "100%", height: "40vh" }} />
       {/* <Cropper onResult={oncrop} type="square" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}
       {/* <Cropper onResult={oncrop} type="circle" nodesNum={10} image={image} style={{width:"60%",height:"40vh"}}/> */}

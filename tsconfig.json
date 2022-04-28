@@ -1,35 +1,39 @@
 {
-    "compileOnSave": true,
     "compilerOptions": {
-        "outDir": "./dist", // 打包到的目录
-        "sourceMap": true, // 是否生成sourceMap（用于浏览器调试）
-        "noImplicitAny": false,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "declaration": true, // 是否生成声明文件
-        "declarationDir": "dist/types/", // 声明文件打包的位置
-        "declarationMap": true, // 是否生成声明文件map文件（便于调试）
-        "moduleResolution": "node",
+        "outDir": "dist",
+        "declaration": true,// 是否生成声明文件
+        "declarationDir": "dist",// 声明文件打包的位置
+        "declarationMap": true,// 是否生成声明文件map文件（便于调试）
+        "baseUrl": ".",
         "module": "esnext",
-        "target": "es5", // 转化成的目标语言
-        "baseUrl": "./",
-        "types": [
-            "node",
-        ],
-        "typeRoots": [
-            "./node_modules/@types"
-        ],
-        "lib": [
-            "dom",
-            "es2015"
-        ],
+        "target": "es5",
+        "lib": ["es6", "dom"],
+        "sourceMap": true,
         "jsx": "react",
-        "allowJs": false
+        "moduleResolution": "node",
+        "rootDir": ".",
+        "forceConsistentCasingInFileNames": false,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "importHelpers": true,
+        "strictNullChecks": true,
+        // "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true
     },
     "include": [
-        "src/**/*"
-    ], // 要打包的文件
+        "./src/**/*"
+    ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "build",
+        "dist",
+        "scripts",
+        "acceptance-tests",
+        "webpack",
+        "jest",
+        "src/setupTests.ts",
+        "*.js"
     ]
 }
