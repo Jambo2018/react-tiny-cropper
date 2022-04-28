@@ -44,14 +44,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
 
   return (
     <div ref={boxRef} className="box" style={{...props.style, backgroundImage: `url(${image})` }}>
-      {/* <img
-        src={image}
-        // width={600}
-        // height={400}
-        style={{ position: "absolute", zIndex: "-1", }}
-      /> */}
       {ClipCom}
-      {/* <ClipCom/> */}
     </div>
   );
 };

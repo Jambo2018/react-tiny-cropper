@@ -10,3 +10,5 @@
 - resize cropper area
 - ~~resolution ratio~~
 - paint circle based on rectangle
+- d.ts
+- father css transfer
