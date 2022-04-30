@@ -121,7 +121,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
 
   const onMouseEnter =(e: any) => {
     // console.log("enter")
-    const { offsetX, offsetY } = e.nativeEvent;
+    // const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = useCallback( (e: any) => {
     if (!canvasRef.current) return;
