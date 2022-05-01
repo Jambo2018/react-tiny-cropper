@@ -9,7 +9,7 @@ interface propsType {
   type: Shap,
   nodesNum?: number,
   image: string,
-  style: object,
+  style?: object,
   onResult: (url: string) => void
 }
 const Cropper: React.FC<propsType> = (props: propsType) => {

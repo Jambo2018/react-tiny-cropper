@@ -153,7 +153,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     const { offsetX, offsetY } = e.nativeEvent;
   };
   const onMouseMove = (e: any) => {
-    console.log(e.clientX,e.clientY)
+    // console.log(e.clientX,e.clientY)
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     // let { offsetX: x, offsetY: y } = e.nativeEvent;
@@ -183,7 +183,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     press.current = false;
     pos.current = props.dots;
   };
-  console.log(canvasWidth)
+  // console.log(canvasWidth)
 
   return (
     <canvas

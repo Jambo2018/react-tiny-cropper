@@ -1,0 +1,17 @@
+h1,
+body {
+  text-align: center;
+  font-family: Lato;
+}
+
+.container {
+  height: 60vh;
+}
+
+.cropper {
+  border: 1px solid #f40;
+  box-sizing: border-box;
+  width: 50%;
+  height: 50%;
+  float: left;
+}
