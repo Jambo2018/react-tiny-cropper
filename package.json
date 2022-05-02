@@ -1,6 +1,6 @@
 {
   "name": "react-tiny-cropper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./dist/index.js",
   "description": "A React component that supports cropping image with multiple shapes",
   "scripts": {
