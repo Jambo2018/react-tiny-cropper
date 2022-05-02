@@ -148,10 +148,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     pos.current = on_down(polygon, { x, y });
     setCursor(pos.current);
   };
-  const onMouseEnter = (e: any) => {
-    // console.log("enter")
-    const { offsetX, offsetY } = e.nativeEvent;
-  };
+
   const onMouseMove = (e: any) => {
     // console.log(e.clientX,e.clientY)
     if (!canvasRef.current) return;
@@ -191,9 +188,6 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       width={canvasWidth}
       height={canvasHeight}
       onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
-      // onMouseMove={onMouseMove}
-      // onMouseUp={onMouseUp}
     />
   );
 };

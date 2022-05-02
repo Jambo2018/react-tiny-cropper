@@ -119,10 +119,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     setLast({ x, y });
   };
 
-  const onMouseEnter =(e: any) => {
-    // console.log("enter")
-    // const { offsetX, offsetY } = e.nativeEvent;
-  };
+
   const onMouseMove = useCallback( (e: any) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
@@ -181,9 +178,6 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
       width={canvasWidth}
       height={canvasHeight}
       onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
-    // onMouseMove={onMouseMove}
-    // onMouseUp={onMouseUp}
     />
   );
 };

@@ -122,10 +122,7 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     setCursor(pos.current);
     setLast({ x, y });
   };
-  const onMouseEnter = (e: any) => {
-    // console.log("enter")
-    const { offsetX, offsetY } = e.nativeEvent;
-  };
+
   const onMouseMove = (e: any) => {
     if (!press.current) {
       let p = on_down(circle, e);
@@ -176,7 +173,6 @@ const Circle: React.FC<propsType> = (props: propsType) => {
       width={canvasWidth}
       height={canvasHeight}
       onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     />
