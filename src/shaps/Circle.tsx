@@ -60,7 +60,6 @@ const Circle: React.FC<propsType> = (props: propsType) => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     ctx.strokeStyle = "#0F0";
-    ctx.fillStyle = "#F40";
     ctx.beginPath();
     ctx.lineTo(0, 0);
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
