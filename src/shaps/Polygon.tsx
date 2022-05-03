@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { DW, getCropPosition } from "./corCaculate";
+import { DW, getCropPosition,paintArc } from "./corCaculate";
 interface propsType {
   src?: string;
   dots: number;
@@ -62,7 +62,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillStyle = "rgba(0,0,0,0.6)";
     ctx.beginPath();
     ctx.lineTo(0, 0);
     for (let i = 0; i < props.dots; i++) {
@@ -76,16 +76,18 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
 
     ctx.fill();
 
-    ctx.strokeStyle = "#0F0";
-    ctx.fillStyle = "#F40";
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.fillStyle = "rgba(24,144,255,0.8)";
     ctx.beginPath();
+    ctx.setLineDash([4]);
     for (let i = 0; i < props.dots; i++) {
-      ctx.setLineDash([5]);
       ctx.lineTo(polygon[i].x, polygon[i].y);
-      ctx.fillRect(polygon[i].x - DW / 2, polygon[i].y - DW / 2, DW, DW);
     }
     ctx.lineTo(polygon[0].x, polygon[0].y);
 
+    for (let i = 0; i < props.dots; i++) {
+      paintArc(ctx,polygon[i].x , polygon[i].y , DW);
+    }
     ctx.stroke();
     ctx.closePath();
 
