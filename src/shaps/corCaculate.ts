@@ -185,17 +185,17 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             if (circle) {
                 // circle center
-                let cy=y+height/2;
-                if (cy+ width / 2 > canvasHeight) {
-                    height = (canvasHeight -cy) * 2;
+                let cy = y + height / 2;
+                if (cy + width / 2 > canvasHeight) {
+                    height = (canvasHeight - cy) * 2;
                     width = height;
-                }else  if (cy-width / 2 <0) {
+                } else if (cy - width / 2 < 0) {
                     height = cy * 2;
                     width = height;
                 } else {
                     height = width;
                 }
-                y = cy-height/2;
+                y = cy - height / 2;
             }
             // if (y + height > canvasHeight) {
             //     height = canvasHeight - y
@@ -241,4 +241,12 @@ export function getCropPosition(cW: number, cH: number, iW: number, iH: number, 
         return [x * rate, (y - (cH - iH / rate) / 2) * rate, width * rate, height * rate]
     }
 
+}
+
+
+export function paintArc(ctx: any, x: number, y: number, radius: number) {
+    ctx.beginPath();
+    ctx.arc(x, y, DW / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.closePath()
 }

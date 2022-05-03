@@ -1,6 +1,5 @@
 import React,{ useMemo, useRef } from "react";
-import Circle from "./shaps/Circle1";
-import Rectangle from "./shaps/Rectangle";
+import RecCom from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
 import "./index.css";
 
@@ -28,11 +27,11 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
     
     switch (type) {
       case "rectangle":
-        return <Rectangle onResult={props.onResult} {...config} />
+        return <RecCom onResult={props.onResult} {...config} />
       case "square":
-        return <Rectangle onResult={props.onResult} {...config}  square />
+        return <RecCom onResult={props.onResult} {...config}  square />
       case "circle":
-        return <Circle onResult={props.onResult} {...config}  circle/>
+        return <RecCom onResult={props.onResult} {...config}  circle/>
       case "polygon":
         return <Polygon onResult={props.onResult} dots={props.nodesNum || 4} {...config}  />
       default:
