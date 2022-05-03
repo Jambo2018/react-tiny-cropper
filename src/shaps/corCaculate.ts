@@ -72,7 +72,7 @@ export function on_down(rec: Rectangle, client: Cors, circle?: boolean): number 
     return pos;
 }
 
-export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, canvasWidth: number, canvasHeight: number, square?: boolean): Rectangle {
+export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position, canvasWidth: number, canvasHeight: number, square?: boolean, circle?: boolean): Rectangle {
     //    console.log(rec,client,last,pos)
     const { offsetX, offsetY } = client;
     let { x, y, width, height } = rec;
@@ -86,7 +86,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             y += dy;
             break;
         case Position.top_left:
-            if (square) break;
+            if (square || circle) break;
             x = offsetX < 0 ? 0 : offsetX;
             y = offsetY < 0 ? 0 : offsetY;
             width = bx - x;
@@ -101,7 +101,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             break;
         case Position.top_right:
-            if (square) break;
+            if (square || circle) break;
             height -= dy;
             if (height < 30) {
                 height = 30;
@@ -138,7 +138,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             break;
         case Position.bottom_left:
-            if (square) break;
+            if (square || circle) break;
             x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
             if (width < 30) {
@@ -156,7 +156,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             break;
         case Position.top:
-            if (square) break;
+            if (square || circle) break;
             y = offsetY < 0 ? 0 : offsetY;
             height = by - y;
             if (height < 30) {
@@ -165,7 +165,7 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             break;
         case Position.bottom:
-            if (square) break;
+            if (square || circle) break;
             height += dy;
             if (height < 30) {
                 height = 30;
@@ -183,9 +183,26 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             if (x + width > canvasWidth) {
                 width = canvasWidth - x
             }
+            if (circle) {
+                // circle center
+                let cy=y+height/2;
+                if (cy+ width / 2 > canvasHeight) {
+                    height = (canvasHeight -cy) * 2;
+                    width = height;
+                }else  if (cy-width / 2 <0) {
+                    height = cy * 2;
+                    width = height;
+                } else {
+                    height = width;
+                }
+                y = cy-height/2;
+            }
+            // if (y + height > canvasHeight) {
+            //     height = canvasHeight - y
+            // }
             break;
         case Position.left:
-            if (square) break;
+            if (square || circle) break;
             x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
             if (width < 30) {

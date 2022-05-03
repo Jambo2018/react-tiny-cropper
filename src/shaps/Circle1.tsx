@@ -130,7 +130,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
     let img = new Image();
     img.setAttribute("crossOrigin", "anonymous");
     img.src = src || "";
-    console.log(width, height);
+    // console.log(width, height);
     img.onload = function () {
       if (circle) {
         cropper_ctx?.beginPath();
@@ -211,7 +211,8 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
         pos.current,
         canvasWidth,
         canvasHeight,
-        square
+        square,
+        circle
       );
 
       setLast({ x: offsetX, y: offsetY });
