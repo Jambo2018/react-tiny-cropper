@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Cropper from "../src/index";
 import "./index.css"
@@ -8,9 +8,7 @@ function App() {
   const oncrop = (e: string) => {
     setImg(e);
   };
-  // console.log(Cropper);
   const onSelectImage = (e: any) => {
-    // console.log(e.target.files[0])
     let reader = new FileReader();
     reader.onload = function () {
       let image = '';
@@ -19,6 +17,10 @@ function App() {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  useEffect(() => {
+    setImage('https://jambo2018.github.io/img/top_img.jpeg');
+  }, []);
 
   return (
     <div>
