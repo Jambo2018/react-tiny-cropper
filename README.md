@@ -12,6 +12,7 @@
 - paint circle based on rectangle
 - d.ts
 - father css transfer
+- init image in example
 
 
 [Demo](https://stackblitz.com/edit/react-ts-cdfjzd)
