@@ -5,7 +5,7 @@ import {
   on_down,
   on_move,
   rec_curser,
-  square_curser,
+  // square_curser,
   getCropPosition,
   Rectangle
 } from "./corCaculate";
@@ -106,7 +106,7 @@ const RecCom: React.FC<propsType> = (props: propsType) => {
   const setCursor = (p: Position) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    if (square) canvas.style.cursor = square_curser[p];
+    if (square) canvas.style.cursor = rec_curser[p];
     else canvas.style.cursor = rec_curser[p];
   };
 

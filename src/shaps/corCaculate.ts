@@ -1,6 +1,6 @@
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
 export const rec_curser = ["default", "move", "se-resize", "sw-resize", "se-resize", "ne-resize", "n-resize", "e-resize", "n-resize", "e-resize"]
-export const square_curser = ["default", "move", "default", "default", "se-resize", "default", "default", "default", "default", "default"]
+// export const square_curser = ["default", "move", "default", "default", "se-resize", "default", "default", "default", "default", "default"]
 export const DW: number = 10;
 export type Rectangle = {
     x: number,
@@ -20,14 +20,20 @@ export function isInArea(n0: number, n1: number, n: number) {
     return n > n0 && n < n1
 }
 
-export function on_down(rec: Rectangle, client: Cors): number {
+export function on_down(rec: Rectangle, client: Cors, circle?: boolean): number {
     const { x, y, width, height } = rec;
     const { offsetX, offsetY } = client;
     let pos;
     if (
         isInArea(x + DW / 2, x + width - DW / 2, offsetX) && isInArea(y + DW / 2, y + height - DW / 2, offsetY)
     ) {
-        pos = Position.in;
+        if (circle)
+            if (Math.pow(offsetX - (x + width / 2), 2) + Math.pow(offsetY - (y + height / 2), 2) < Math.pow((height - DW / 2), 2))
+                pos = Position.in;
+            else
+                pos = Position.out;
+        else
+            pos = Position.in;
     } else if (
         isInArea(x - DW / 2, x + DW / 2, offsetX) && isInArea(y - DW / 2, y + DW / 2, offsetY)
     ) {
@@ -85,21 +91,21 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             y = offsetY < 0 ? 0 : offsetY;
             width = bx - x;
             height = by - y;
-            if(width<30){
-                width=30;
-                x=bx-width;
+            if (width < 30) {
+                width = 30;
+                x = bx - width;
             }
-            if(height<30){
-                height=30;
-                y=by-height;
+            if (height < 30) {
+                height = 30;
+                y = by - height;
             }
             break;
         case Position.top_right:
             if (square) break;
             height -= dy;
-            if(height<30){
-                height=30;
-                y=by-height;
+            if (height < 30) {
+                height = 30;
+                y = by - height;
             }
             y = by - height;
             if (y < 0) {
@@ -118,11 +124,11 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             }
             width += dx;
             height += dy
-            if(width<30){
-                width=30;
+            if (width < 30) {
+                width = 30;
             }
-            if(height<30){
-                height=30;
+            if (height < 30) {
+                height = 30;
             }
             if (x + width > canvasWidth) {
                 width = canvasWidth - x
@@ -135,15 +141,15 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             if (square) break;
             x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
-            if(width<30){
-                width=30;
-                x=bx-width;
+            if (width < 30) {
+                width = 30;
+                x = bx - width;
             }
-        
+
             height += dy;
-            if(height<30){
-                height=30;
-                y=by-height;
+            if (height < 30) {
+                height = 30;
+                y = by - height;
             }
             if (y + height > canvasHeight) {
                 height = canvasHeight - y
@@ -153,16 +159,16 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             if (square) break;
             y = offsetY < 0 ? 0 : offsetY;
             height = by - y;
-            if(height<30){
-                height=30;
-                y=by-height;
+            if (height < 30) {
+                height = 30;
+                y = by - height;
             }
             break;
         case Position.bottom:
             if (square) break;
             height += dy;
-            if(height<30){
-                height=30;
+            if (height < 30) {
+                height = 30;
             }
             if (y + height > canvasHeight) {
                 height = canvasHeight - y
@@ -171,8 +177,8 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
         case Position.right:
             if (square) break;
             width += dx
-            if(width<30){
-                width=30;
+            if (width < 30) {
+                width = 30;
             }
             if (x + width > canvasWidth) {
                 width = canvasWidth - x
@@ -182,9 +188,9 @@ export function on_move(rec: Rectangle, client: Cors, last: Last, pos: Position,
             if (square) break;
             x = offsetX < 0 ? 0 : offsetX;
             width = bx - x
-            if(width<30){
-                width=30;
-                x=bx-width;
+            if (width < 30) {
+                width = 30;
+                x = bx - width;
             }
             break;
         default: break;
