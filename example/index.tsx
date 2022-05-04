@@ -8,6 +8,9 @@ function App() {
   const oncrop = (e: string) => {
     setImg(e);
   };
+
+  const styles={width:"50%",height:"50%",border: '1px solid #f40',boxSizing:"border-box"};
+
   const onSelectImage = (e: any) => {
     let reader = new FileReader();
     reader.onload = function () {
@@ -26,38 +29,34 @@ function App() {
     <div>
       <input type="file" onChange={onSelectImage} />
       <div className="container">
-        <div className="cropper">
           <Cropper
             onResult={oncrop}
             type="rectangle"
             nodesNum={10}
             image={image}
-          />
-        </div>
-        <div className="cropper">
+            style={styles}
+            />
           <Cropper
             onResult={oncrop}
             type="square"
             nodesNum={10}
             image={image}
-          />
-        </div>
-        <div className="cropper">
+            style={styles}
+            />
           <Cropper
             onResult={oncrop}
             type="circle"
             nodesNum={10}
             image={image}
-          />
-        </div>
-        <div className="cropper">
+            style={styles}
+            />
           <Cropper
             onResult={oncrop}
             type="polygon"
             nodesNum={10}
             image={image}
+            style={styles}
           />
-        </div>
       </div>
       <img src={img.toString()} alt="预览" />
     </div>
