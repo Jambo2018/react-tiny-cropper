@@ -36,7 +36,7 @@ function getInitital(cW: number, cH: number, dots: number): PolyCors[] {
 
 const Polygon: React.FC<cropperType> = (props: cropperType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { src, canvasWidth, canvasHeight, dots=4 } = props;
+  const { src, canvasWidth, canvasHeight, dots=4,configs:{cropColor,maskColor} } = props;
   const [polygon, setPolygon] = useState<PolyCors[]>(getInitital(canvasWidth, canvasHeight, dots));
   const pos = useRef<number>(dots);
   const press = useRef<boolean>(false);
@@ -63,7 +63,7 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    ctx.fillStyle = "rgba(0,0,0,0.6)";
+    ctx.fillStyle = maskColor;
     ctx.beginPath();
     ctx.lineTo(0, 0);
     for (let i = 0; i < dots; i++) {
@@ -77,8 +77,8 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
 
     ctx.fill();
 
-    ctx.strokeStyle = "rgba(255,255,255,0.5)";
-    ctx.fillStyle = "rgba(24,144,255,0.8)";
+    ctx.strokeStyle = cropColor;
+    ctx.fillStyle = cropColor;
     ctx.beginPath();
     ctx.setLineDash([4]);
     for (let i = 0; i < dots; i++) {

@@ -43,8 +43,9 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
     canvasHeight,
     square = false,
     circle = false,
+    configs:{maskColor,cropColor}
   } = props;
-
+console.log(cropColor,maskColor)
   const [rec, setRec] = useState(
     getInitital(canvasWidth, canvasHeight, square, circle)
   );
@@ -63,7 +64,7 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
     ctx.beginPath();
     ctx.setLineDash([0]);
     ctx.lineWidth = 0.5;
-    ctx.strokeStyle = "rgba(24,144,255,0.6)";
+    ctx.strokeStyle = cropColor;
 
     if (circle) {
       ctx.beginPath();
@@ -73,14 +74,14 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
       ctx.lineTo(0, canvasHeight);
       ctx.lineTo(canvasWidth, canvasHeight);
       ctx.lineTo(canvasWidth, 0);
-      ctx.fillStyle = "rgba(0,0,0,0.6)";
+      ctx.fillStyle = maskColor;
       ctx.fill();
 
       ctx.beginPath();
       ctx.arc(x + width / 2, y + height / 2, width / 2, 0, 2 * Math.PI);
       ctx.stroke();
     } else {
-      ctx.fillStyle = "rgba(0,0,0,0.6)";
+      ctx.fillStyle = maskColor;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       ctx.clearRect(x, y, width, height);
 
@@ -107,7 +108,7 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
       ctx.stroke();
     }
     ctx.closePath();
-    ctx.fillStyle = "rgba(24,144,255,0.8)";
+    ctx.fillStyle =cropColor;
     if (circle) {
       // right-middle
       paintArc(ctx, x + width, y + height / 2, DW / 2);

@@ -13,11 +13,17 @@ export interface propsType {
   onResult: (url: string) => void
 }
 
+
+export type CropConfigTypes = {
+  maskColor: string,
+  cropColor: string,
+}
 export interface cropperType {
   src?: string;
   square?: boolean;
   circle?: boolean;
   dots?: number;
+  configs:CropConfigTypes;
   canvasWidth: number;
   canvasHeight: number;
   onResult: (url: string) => void;

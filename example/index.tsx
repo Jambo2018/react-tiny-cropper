@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Cropper from "../src/index";
 import "./index.css"
+
 function App() {
   const [img, setImg] = useState<string>('');
   const [image, setImage] = useState<string>('');
@@ -9,8 +10,7 @@ function App() {
     setImg(e);
   };
 
-  const styles={width:"50%",height:"50%",border: '1px solid #f40',boxSizing:"border-box"};
-
+  
   const onSelectImage = (e: any) => {
     let reader = new FileReader();
     reader.onload = function () {
@@ -20,11 +20,12 @@ function App() {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
-
+  
   useEffect(() => {
     setImage('https://jambo2018.github.io/img/top_img.jpeg');
   }, []);
-
+  
+  const styles={width:"50%",height:"50%",border: '1px solid #f40',boxSizing:"border-box"};
   return (
     <div>
       <input type="file" onChange={onSelectImage} />

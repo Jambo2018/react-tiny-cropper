@@ -17,11 +17,20 @@ import { propsType } from "./type";
 //   configs?:ConfigTypes,
 //   onResult: (url: string) => void
 // }
+
+const defaulConfigs = {
+  backgroundColor: "rgba(24,144,255,0.5)",
+  maskColor: "rgba(0,0,0,0.6)",
+  cropColor: "rgba(24,144,255,0.6)"
+}
 const Cropper: React.FC<propsType> = (props: propsType) => {
-  const { type = "rectangle", image = "" } = props;
+  const {
+    type = "rectangle",
+    image = "",
+    configs,
+  } = props;
   const boxRef = useRef<HTMLDivElement>(null);
-
-
+  const backgroundColor = configs?.backgroundColor || defaulConfigs.backgroundColor;
   const ClipCom = useMemo(() => {
     if (!boxRef.current) return null;
     const { clientWidth, clientHeight } = boxRef.current;
@@ -29,6 +38,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
       canvasWidth: clientWidth,
       canvasHeight: clientHeight,
       src: image,
+      configs: { ...defaulConfigs, ...configs }
     }
 
     switch (type) {
@@ -48,7 +58,7 @@ const Cropper: React.FC<propsType> = (props: propsType) => {
 
 
   return (
-    <div ref={boxRef} className="box" style={{ ...props.style, backgroundImage: `url(${image})` }}>
+    <div ref={boxRef} className="box" style={{ ...props.style, backgroundImage: `url(${image})`, backgroundColor: backgroundColor }}>
       {ClipCom}
     </div>
   );

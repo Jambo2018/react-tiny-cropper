@@ -29,8 +29,8 @@
 ### configs
 |name|type|default|description|
 |-|-|-|-|
-|backgroundColor|string|rgba(24,144,255,0.5)|The color of background|
-|maskColor|string|rgba(0,0,0,0.6)|The color of mask|
-|cropColor|string|rgba(24,144,255,0.6)|The color of CropperBox|
+|backgroundColor|string|<a style="color:rgba(24,144,255,0.5)">rgba(24,144,255,0.5)</a>|The color of background|
+|maskColor|string|<a style="color:rgba(0,0,0,0.6)">rgba(0,0,0,0.6)</a>|The color of mask|
+|cropColor|string|<a style="color:rgba(24,144,255,0.6)">rgba(24,144,255,0.6)</a>|The color of CropperBox|
 
 [Demo](https://stackblitz.com/edit/react-ts-cdfjzd)
