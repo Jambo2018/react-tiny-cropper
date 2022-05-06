@@ -33,28 +33,25 @@ function App() {
           <Cropper
             onResult={oncrop}
             type="rectangle"
-            nodesNum={10}
             image={image}
             style={styles}
             />
           <Cropper
             onResult={oncrop}
             type="square"
-            nodesNum={10}
             image={image}
             style={styles}
             />
           <Cropper
             onResult={oncrop}
             type="circle"
-            nodesNum={10}
             image={image}
             style={styles}
             />
           <Cropper
             onResult={oncrop}
             type="polygon"
-            nodesNum={10}
+            nodesNum={5}
             image={image}
             style={styles}
           />
