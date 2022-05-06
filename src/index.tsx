@@ -2,21 +2,21 @@ import React, { useMemo, useRef } from "react";
 import RecCom from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
 import "./index.css";
-
-type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
-type ConfigTypes = {
-  backgroundColor?: string,
-  maskColor?: string,
-  cropColor?: string,
-}
-interface propsType {
-  type: Shap,
-  nodesNum?: number,
-  image: string,
-  style?: object,
-  configs?:ConfigTypes,
-  onResult: (url: string) => void
-}
+import { propsType } from "./types";
+// type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
+// type ConfigTypes = {
+//   backgroundColor?: string,
+//   maskColor?: string,
+//   cropColor?: string,
+// }
+// interface propsType {
+//   type: Shap,
+//   nodesNum?: number,
+//   image: string,
+//   style?: object,
+//   configs?:ConfigTypes,
+//   onResult: (url: string) => void
+// }
 const Cropper: React.FC<propsType> = (props: propsType) => {
   const { type = "rectangle", image = "" } = props;
   const boxRef = useRef<HTMLDivElement>(null);
