@@ -6,17 +6,17 @@ import {
   on_move,
   rec_curser,
   getCropPosition,
-  Rectangle,
   paintArc,
 } from "./corCaculate";
-interface propsType {
-  src?: string;
-  square?: boolean;
-  circle?: boolean;
-  canvasWidth: number;
-  canvasHeight: number;
-  onResult: (url: string) => void;
-}
+import {cropperType,Rectangle} from "../type"; 
+// interface cropperType {
+//   src?: string;
+//   square?: boolean;
+//   circle?: boolean;
+//   canvasWidth: number;
+//   canvasHeight: number;
+//   onResult: (url: string) => void;
+// }
 
 function getInitital(
   cW: number,
@@ -35,7 +35,7 @@ function getInitital(
   // console.log("###########",x,y,width,height)
   return { x, y, width, height };
 }
-const RecCom: React.FC<propsType> = (props: propsType) => {
+const RecCom: React.FC<cropperType> = (props: cropperType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const {
     src,

@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from "react";
 import RecCom from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
 import "./index.css";
-import { propsType } from "./types";
+import { propsType } from "./type";
 // type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
 // type ConfigTypes = {
 //   backgroundColor?: string,

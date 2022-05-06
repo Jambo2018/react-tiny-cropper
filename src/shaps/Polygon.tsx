@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DW, getCropPosition,paintArc } from "./corCaculate";
-interface propsType {
-  src?: string;
-  dots: number;
-  canvasWidth: number,
-  canvasHeight: number,
-  onResult: (url: string) => void;
-}
-type Cors = {
-  x: number;
-  y: number;
-};
+import {cropperType,PolyCors} from "../type"
+// interface propsType {
+//   src?: string;
+//   dots: number;
+//   canvasWidth: number,
+//   canvasHeight: number,
+//   onResult: (url: string) => void;
+// }
+// type PolyCors = {
+//   x: number;
+//   y: number;
+// };
 
 
-function getInitital(cW: number, cH: number, dots: number): Cors[] {
+function getInitital(cW: number, cH: number, dots: number): PolyCors[] {
   const radius = Math.min(cW * 0.5, cH * 0.5, 200) / 2;
   const x = cW / 2;
   const y = cH / 2;
@@ -33,11 +34,11 @@ function getInitital(cW: number, cH: number, dots: number): Cors[] {
   return a;
 }
 
-const Polygon: React.FC<propsType> = (props: propsType) => {
+const Polygon: React.FC<cropperType> = (props: cropperType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { src, canvasWidth, canvasHeight, dots } = props;
-  const [polygon, setPolygon] = useState<Cors[]>(getInitital(canvasWidth, canvasHeight, dots));
-  const pos = useRef<number>(props.dots);
+  const { src, canvasWidth, canvasHeight, dots=4 } = props;
+  const [polygon, setPolygon] = useState<PolyCors[]>(getInitital(canvasWidth, canvasHeight, dots));
+  const pos = useRef<number>(dots);
   const press = useRef<boolean>(false);
 
   // init canvas and paint the background
@@ -65,7 +66,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     ctx.fillStyle = "rgba(0,0,0,0.6)";
     ctx.beginPath();
     ctx.lineTo(0, 0);
-    for (let i = 0; i < props.dots; i++) {
+    for (let i = 0; i < dots; i++) {
       ctx.lineTo(polygon[i].x, polygon[i].y);
     }
     ctx.lineTo(polygon[0].x, polygon[0].y);
@@ -80,12 +81,12 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
     ctx.fillStyle = "rgba(24,144,255,0.8)";
     ctx.beginPath();
     ctx.setLineDash([4]);
-    for (let i = 0; i < props.dots; i++) {
+    for (let i = 0; i < dots; i++) {
       ctx.lineTo(polygon[i].x, polygon[i].y);
     }
     ctx.lineTo(polygon[0].x, polygon[0].y);
 
-    for (let i = 0; i < props.dots; i++) {
+    for (let i = 0; i < dots; i++) {
       paintArc(ctx,polygon[i].x , polygon[i].y , DW);
     }
     ctx.stroke();
@@ -124,15 +125,15 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
   const setCursor = (p: number) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
-    if (p === props.dots) canvas.style.cursor = "default";
+    if (p === dots) canvas.style.cursor = "default";
     else canvas.style.cursor = "move";
   };
   function isInArea(n0: number, n1: number, n: number) {
     return n > n0 && n < n1;
   }
 
-  function on_down(polygon: Cors[], e: Cors): number {
-    for (let i = 0; i < props.dots; i++) {
+  function on_down(polygon: PolyCors[], e: PolyCors): number {
+    for (let i = 0; i < dots; i++) {
       if (
         isInArea(polygon[i].x - DW / 2, polygon[i].x + DW / 2, e.x) &&
         isInArea(polygon[i].y - DW / 2, polygon[i].y + DW / 2, e.y)
@@ -140,7 +141,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
         return i;
       }
     }
-    return props.dots;
+    return dots;
   }
 
   const onMouseDown = (e: any) => {
@@ -164,7 +165,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
       let p = on_down(polygon, { x, y });
       setCursor(p);
     }
-    if (pos.current === props.dots) return;
+    if (pos.current === dots) return;
 
     if (x < 0)
       x = 0
@@ -180,7 +181,7 @@ const Polygon: React.FC<propsType> = (props: propsType) => {
   };
   const onMouseUp = (e: any) => {
     press.current = false;
-    pos.current = props.dots;
+    pos.current = dots;
   };
   // console.log(canvasWidth)
 
