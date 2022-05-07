@@ -9,14 +9,6 @@ import {
   paintArc,
 } from "./corCaculate";
 import {cropperType,Rectangle} from "../type"; 
-// interface cropperType {
-//   src?: string;
-//   square?: boolean;
-//   circle?: boolean;
-//   canvasWidth: number;
-//   canvasHeight: number;
-//   onResult: (url: string) => void;
-// }
 
 function getInitital(
   cW: number,
@@ -32,7 +24,6 @@ function getInitital(
   }
   const x = (cW - width) / 2;
   const y = (cH - height) / 2;
-  // console.log("###########",x,y,width,height)
   return { x, y, width, height };
 }
 const RecCom: React.FC<cropperType> = (props: cropperType) => {

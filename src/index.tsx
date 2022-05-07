@@ -3,20 +3,6 @@ import RecCom from "./shaps/Rectangle";
 import Polygon from "./shaps/Polygon";
 import "./index.css";
 import { propsType } from "./type";
-// type Shap = 'circle' | 'square' | 'rectangle' | 'polygon' | never;
-// type ConfigTypes = {
-//   backgroundColor?: string,
-//   maskColor?: string,
-//   cropColor?: string,
-// }
-// interface propsType {
-//   type: Shap,
-//   nodesNum?: number,
-//   image: string,
-//   style?: object,
-//   configs?:ConfigTypes,
-//   onResult: (url: string) => void
-// }
 
 const defaulConfigs = {
   backgroundColor: "rgba(24,144,255,0.5)",
