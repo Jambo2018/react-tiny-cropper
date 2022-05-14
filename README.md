@@ -58,3 +58,4 @@ function Demo() {
 ## TodoList
 - allow mobile
 - change default nodesNum
+- line - dot radius
