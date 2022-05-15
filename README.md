@@ -1,6 +1,6 @@
 # React-polygon-cropper
 
-> A React cropper component which supports rectangle,square,circle,polygon
+> A React cropper component which compatible with lots of shaps such as rectangle,square,circle,polygon.The operation on PC or Mobile are both supportted.
 
 ## Demo
 
@@ -31,7 +31,7 @@ $ yarn add react-tiny-cropper
 | --------------- | ------ | -------------------------------------------------------------- | ----------------------- |
 | backgroundColor | string | <a style="color:rgba(24,144,255,0.5)">rgba(24,144,255,0.5)</a> | The color of background |
 | maskColor       | string | <a style="color:rgba(0,0,0,0.6)">rgba(0,0,0,0.6)</a>           | The color of mask       |
-| cropColor       | string | <a style="color:rgba(24,144,255,0.6)">rgba(24,144,255,0.6)</a> | The color of CropperBox |
+| cropColor       | string | <a style="color:rgba(24,144,255,1)">rgba(24,144,255,0.6)</a> | The color of CropperBox |
 
 ## Usage
 
@@ -54,8 +54,3 @@ function Demo() {
     )
 }
 ```
-
-## TodoList
-- allow mobile
-- change default nodesNum
-- line - dot radius
