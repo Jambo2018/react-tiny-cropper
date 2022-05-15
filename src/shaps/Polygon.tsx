@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { DW, getCropPosition,paintArc } from "./corCaculate";
-import {cropperType,PolyCors} from "../type"
+import { DW, getCropPosition, paintArc } from "./corCaculate";
+import { cropperType, PolyCors } from "../type";
 // interface propsType {
 //   src?: string;
 //   dots: number;
@@ -12,7 +12,6 @@ import {cropperType,PolyCors} from "../type"
 //   x: number;
 //   y: number;
 // };
-
 
 function getInitital(cW: number, cH: number, dots: number): PolyCors[] {
   const radius = Math.min(cW * 0.5, cH * 0.5, 200) / 2;
@@ -29,15 +28,26 @@ function getInitital(cW: number, cH: number, dots: number): PolyCors[] {
     }
     let cos = Math.cos(angel).toFixed(3);
     let sin = Math.sin(angel).toFixed(3);
-    a.push({ x: x + radius * parseFloat(cos), y: y + radius * parseFloat(sin) });
+    a.push({
+      x: x + radius * parseFloat(cos),
+      y: y + radius * parseFloat(sin),
+    });
   }
   return a;
 }
 
 const Polygon: React.FC<cropperType> = (props: cropperType) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { src, canvasWidth, canvasHeight, dots=4,configs:{cropColor,maskColor} } = props;
-  const [polygon, setPolygon] = useState<PolyCors[]>(getInitital(canvasWidth, canvasHeight, dots));
+  const {
+    src,
+    canvasWidth,
+    canvasHeight,
+    dots = 4,
+    configs: { cropColor, maskColor },
+  } = props;
+  const [polygon, setPolygon] = useState<PolyCors[]>(
+    getInitital(canvasWidth, canvasHeight, dots)
+  );
   const pos = useRef<number>(dots);
   const press = useRef<boolean>(false);
 
@@ -52,9 +62,8 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     return () => {
       window.removeEventListener("mouseup", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-    }
-  }, [])
-
+    };
+  }, []);
 
   function paint() {
     if (!canvasRef.current) return;
@@ -87,7 +96,7 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     ctx.lineTo(polygon[0].x, polygon[0].y);
 
     for (let i = 0; i < dots; i++) {
-      paintArc(ctx,polygon[i].x , polygon[i].y , DW);
+      paintArc(ctx, polygon[i].x, polygon[i].y, DW);
     }
     ctx.stroke();
     ctx.closePath();
@@ -116,8 +125,27 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
       });
       cropper_ctx?.lineTo(polygon[0].x - x_min, polygon[0].y - y_min);
       cropper_ctx?.clip();
-      const cropPos: number[] = getCropPosition(canvasWidth, canvasHeight, img.width, img.height, x_min, y_min, cropper.width, cropper.height)
-      cropper_ctx?.drawImage(img, cropPos[0], cropPos[1], cropPos[2], cropPos[3], 0, 0, cropper.width, cropper.height);
+      const cropPos: number[] = getCropPosition(
+        canvasWidth,
+        canvasHeight,
+        img.width,
+        img.height,
+        x_min,
+        y_min,
+        cropper.width,
+        cropper.height
+      );
+      cropper_ctx?.drawImage(
+        img,
+        cropPos[0],
+        cropPos[1],
+        cropPos[2],
+        cropPos[3],
+        0,
+        0,
+        cropper.width,
+        cropper.height
+      );
       props.onResult(cropper?.toDataURL("image/png", 1));
     };
   }
@@ -145,9 +173,11 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
   }
 
   const onMouseDown = (e: any) => {
-    // console.log("down")
-    press.current = true;
-    const { offsetX: x, offsetY: y } = e.nativeEvent;
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+    const rect: DOMRectList = canvas.getClientRects();
+    let x = e.clientX - rect[0].x;
+    let y = e.clientY - rect[0].y;
     pos.current = on_down(polygon, { x, y });
     setCursor(pos.current);
   };
@@ -158,23 +188,19 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     const canvas: HTMLCanvasElement = canvasRef.current;
     // let { offsetX: x, offsetY: y } = e.nativeEvent;
     // console.log(x,y)
-    const rect:DOMRectList=canvas.getClientRects();
-    let x=e.clientX-rect[0].x;
-    let y=e.clientY-rect[0].y;
+    const rect: DOMRectList = canvas.getClientRects();
+    let x = e.clientX - rect[0].x;
+    let y = e.clientY - rect[0].y;
     if (!press.current) {
       let p = on_down(polygon, { x, y });
       setCursor(p);
     }
     if (pos.current === dots) return;
 
-    if (x < 0)
-      x = 0
-    if (y < 0)
-      y = 0
-    if (x > canvasWidth)
-      x = canvasWidth
-    if (y > canvasHeight)
-      y = canvasHeight
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x > canvasWidth) x = canvasWidth;
+    if (y > canvasHeight) y = canvasHeight;
     polygon[pos.current] = { x, y };
     setPolygon(polygon);
     paint();
