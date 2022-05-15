@@ -1,7 +1,6 @@
 import {Last,Cors,Rectangle} from "../type";
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
 export const rec_curser = ["default", "move", "nw-resize", "ne-resize", "se-resize", "sw-resize", "n-resize", "e-resize", "s-resize", "w-resize"]
-
 export const DW: number = 12;
 
 
