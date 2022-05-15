@@ -174,12 +174,15 @@ console.log(cropColor,maskColor)
   };
 
   const onMouseDown = (e: any) => {
-    // console.log("down")
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+    const rect: DOMRectList = canvas.getClientRects();
+    let offsetX = e.clientX - rect[0].x;
+    let offsetY = e.clientY - rect[0].y;
     press.current = true;
-    const { offsetX: x, offsetY: y } = e.nativeEvent;
-    pos.current = on_down(rec, e.nativeEvent, circle);
+    pos.current = on_down(rec, {offsetX,offsetY}, circle);
     setCursor(pos.current);
-    setLast({ x, y });
+    setLast({ x:offsetX, y:offsetY});
   };
 
   const onMouseMove = useCallback(
@@ -221,20 +224,22 @@ console.log(cropColor,maskColor)
   }, []);
   // init canvas and paint the background
   useEffect(() => {
+    window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
     return () => {
+      window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
     };
-  }, [onMouseMove, onMouseUp]);
+  }, [onMouseDown,onMouseMove, onMouseUp]);
 
   return (
     <canvas
       ref={canvasRef}
       width={canvasWidth}
       height={canvasHeight}
-      onMouseDown={onMouseDown}
+      // onMouseDown={onMouseDown}
     />
   );
 };
