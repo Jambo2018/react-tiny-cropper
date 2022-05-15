@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DW, getCropPosition, paintArc } from "./corCaculate";
 import { cropperType, PolyCors } from "../type";
+import { useMoveEvent } from "../hooks";
+
 // interface propsType {
 //   src?: string;
 //   dots: number;
@@ -54,15 +56,6 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
   // init canvas and paint the background
   useEffect(() => {
     paint();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    return () => {
-      window.removeEventListener("mouseup", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
   }, []);
 
   function paint() {
@@ -172,25 +165,25 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     return dots;
   }
 
-  const onMouseDown = (e: any) => {
+  const onMouseDown = (clientX:number,clientY:number) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     const rect: DOMRectList = canvas.getClientRects();
-    let x = e.clientX - rect[0].x;
-    let y = e.clientY - rect[0].y;
+    let x = clientX - rect[0].x;
+    let y = clientY - rect[0].y;
     pos.current = on_down(polygon, { x, y });
     setCursor(pos.current);
   };
 
-  const onMouseMove = (e: any) => {
+  const onMouseMove = (clientX:number,clientY:number) => {
     // console.log(e.clientX,e.clientY)
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     // let { offsetX: x, offsetY: y } = e.nativeEvent;
     // console.log(x,y)
     const rect: DOMRectList = canvas.getClientRects();
-    let x = e.clientX - rect[0].x;
-    let y = e.clientY - rect[0].y;
+    let x = clientX - rect[0].x;
+    let y = clientY - rect[0].y;
     if (!press.current) {
       let p = on_down(polygon, { x, y });
       setCursor(p);
@@ -205,18 +198,19 @@ const Polygon: React.FC<cropperType> = (props: cropperType) => {
     setPolygon(polygon);
     paint();
   };
-  const onMouseUp = (e: any) => {
+  const onMouseUp = (clientX:number,clientY:number) => {
     press.current = false;
     pos.current = dots;
   };
   // console.log(canvasWidth)
+
+  useMoveEvent(onMouseDown, onMouseMove, onMouseUp);
 
   return (
     <canvas
       ref={canvasRef}
       width={canvasWidth}
       height={canvasHeight}
-      onMouseDown={onMouseDown}
     />
   );
 };

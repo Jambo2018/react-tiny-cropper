@@ -38,6 +38,10 @@ export type Cors = {
   offsetX: number,
   offsetY: number
 }
+
+export interface MoveEventCallBack{
+  (clientX:number,clientY:number):void
+}
 export type Last = {
   x: number,
   y: number

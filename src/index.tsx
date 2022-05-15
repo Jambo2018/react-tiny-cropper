@@ -7,7 +7,7 @@ import { propsType } from "./type";
 const defaulConfigs = {
   backgroundColor: "rgba(24,144,255,0.5)",
   maskColor: "rgba(0,0,0,0.6)",
-  cropColor: "rgba(24,144,255,0.6)"
+  cropColor: "rgba(24,144,255,1)"
 }
 const Cropper: React.FC<propsType> = (props: propsType) => {
   const {

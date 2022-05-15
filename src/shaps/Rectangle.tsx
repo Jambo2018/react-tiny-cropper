@@ -8,7 +8,8 @@ import {
   getCropPosition,
   paintArc,
 } from "./corCaculate";
-import {cropperType,Rectangle} from "../type"; 
+import { cropperType, Rectangle } from "../type";
+import { useMoveEvent } from "../hooks";
 
 function getInitital(
   cW: number,
@@ -34,9 +35,9 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
     canvasHeight,
     square = false,
     circle = false,
-    configs:{maskColor,cropColor}
+    configs: { maskColor, cropColor },
   } = props;
-console.log(cropColor,maskColor)
+  console.log(cropColor, maskColor);
   const [rec, setRec] = useState(
     getInitital(canvasWidth, canvasHeight, square, circle)
   );
@@ -99,7 +100,7 @@ console.log(cropColor,maskColor)
       ctx.stroke();
     }
     ctx.closePath();
-    ctx.fillStyle =cropColor;
+    ctx.fillStyle = cropColor;
     if (circle) {
       // right-middle
       paintArc(ctx, x + width, y + height / 2, DW / 2);
@@ -173,25 +174,25 @@ console.log(cropColor,maskColor)
     canvas.style.cursor = cursor_style;
   };
 
-  const onMouseDown = (e: any) => {
+  const onMouseDown = (clientX: number, clientY: number) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     const rect: DOMRectList = canvas.getClientRects();
-    let offsetX = e.clientX - rect[0].x;
-    let offsetY = e.clientY - rect[0].y;
+    let offsetX = clientX - rect[0].x;
+    let offsetY = clientY - rect[0].y;
     press.current = true;
-    pos.current = on_down(rec, {offsetX,offsetY}, circle);
+    pos.current = on_down(rec, { offsetX, offsetY }, circle);
     setCursor(pos.current);
-    setLast({ x:offsetX, y:offsetY});
+    setLast({ x: offsetX, y: offsetY });
   };
 
   const onMouseMove = useCallback(
-    (e: any) => {
+    (clientX: number, clientY: number) => {
       if (!canvasRef.current) return;
       const canvas: HTMLCanvasElement = canvasRef.current;
       const rect: DOMRectList = canvas.getClientRects();
-      let offsetX = e.clientX - rect[0].x;
-      let offsetY = e.clientY - rect[0].y;
+      let offsetX = clientX - rect[0].x;
+      let offsetY = clientY - rect[0].y;
 
       if (!press.current) {
         let p = on_down(rec, { offsetX, offsetY }, circle);
@@ -215,24 +216,17 @@ console.log(cropColor,maskColor)
     },
     [last, rec]
   );
-  const onMouseUp = useCallback((_e: any) => {
+  const onMouseUp = useCallback((clientX: number, clientY: number) => {
     press.current = false;
     pos.current = 0;
   }, []);
   useEffect(() => {
     paint();
   }, []);
-  // init canvas and paint the background
-  useEffect(() => {
-    window.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    return () => {
-      window.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [onMouseDown,onMouseMove, onMouseUp]);
+
+
+
+  useMoveEvent(onMouseDown, onMouseMove, onMouseUp);
 
   return (
     <canvas
