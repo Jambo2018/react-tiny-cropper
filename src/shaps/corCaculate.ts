@@ -1,15 +1,9 @@
 import {Last,Cors,Rectangle} from "../type";
 export enum Position { out, in, top_left, top_right, bottom_right, bottom_left, top, right, bottom, left };
 export const rec_curser = ["default", "move", "nw-resize", "ne-resize", "se-resize", "sw-resize", "n-resize", "e-resize", "s-resize", "w-resize"]
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 export const DW: number = 12;
-=======
-export const DW: number = 8;
->>>>>>> e082cd6 (fix cursor)
-=======
-export const DW: number = 12;
->>>>>>> 9e3f674 (add touchevent)
+
 
 export function isInArea(n0: number, n1: number, n: number) {
     return n > n0 && n < n1
