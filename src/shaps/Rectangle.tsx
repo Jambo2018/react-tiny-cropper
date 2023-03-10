@@ -37,7 +37,7 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
     circle = false,
     configs: { maskColor, cropColor },
   } = props;
-  console.log(cropColor, maskColor);
+  // console.log(cropColor, maskColor);
   const [rec, setRec] = useState(
     getInitital(canvasWidth, canvasHeight, square, circle)
   );
@@ -223,8 +223,6 @@ const RecCom: React.FC<cropperType> = (props: cropperType) => {
   useEffect(() => {
     paint();
   }, []);
-
-
 
   useMoveEvent(onMouseDown, onMouseMove, onMouseUp);
 

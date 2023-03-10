@@ -5,7 +5,7 @@ export type ConfigTypes = {
   cropColor?: string,
 }
 export interface propsType {
-  type: Shap,
+  type?: Shap,
   nodesNum?: number,
   image: string,
   style?: object,
@@ -23,7 +23,7 @@ export interface cropperType {
   square?: boolean;
   circle?: boolean;
   dots?: number;
-  configs:CropConfigTypes;
+  configs: CropConfigTypes;
   canvasWidth: number;
   canvasHeight: number;
   onResult: (url: string) => void;
@@ -39,8 +39,8 @@ export type Cors = {
   offsetY: number
 }
 
-export interface MoveEventCallBack{
-  (clientX:number,clientY:number):void
+export interface MoveEventCallBack {
+  (clientX: number, clientY: number): void
 }
 export type Last = {
   x: number,
