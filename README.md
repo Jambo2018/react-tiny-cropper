@@ -4,7 +4,7 @@
 
 ## Demo
 
-[Example](https://stackblitz.com/edit/react-ts-cdfjzd)
+[![](https://d33wubrfki0l68.cloudfront.net/9a3dab7d5789ca17d6b0b9af993d40a26be9e5b6/a0243/img/theme/docs-logo.svg)](https://stackblitz.com/edit/react-ts-cdfjzd)
 
 ## Install
 
