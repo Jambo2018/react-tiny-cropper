@@ -1,4 +1,4 @@
-# React-polygon-cropper
+# React-tiny-cropper
 
 > A React cropper component which compatible with lots of shaps such as rectangle,square,circle,polygon.The operation on PC or Mobile are both supportted.
 
